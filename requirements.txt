@@ -1,0 +1,11 @@
+flask
+numpy
+scikit-learn
+transformers
+sentence-transformers
+chromadb
+rank-bm25
+umap-learn
+requests
+beautifulsoup4
+tqdm

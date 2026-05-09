@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>RAG Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>📚 RAG Assistant</h1>
+
+        <div class="input-container">
+            <input id="query" placeholder="Ask something about Transformers...">
+            <button onclick="ask()">Ask</button>
+        </div>
+
+        <div id="answer"></div>
+        <div id="latency-panel"></div>
+        <div id="query-panel"></div>
+        <div id="retrieval-panel"></div>
+        <div id="mmr-panel"></div>
+        <div id="chunks-panel"></div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='rerank.js') }}"></script>
+    <script src="{{ url_for('static', filename='mmr.js') }}"></script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+
+</body>
+
+</html>
