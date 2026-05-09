@@ -242,8 +242,6 @@ def ask():
         "debug": debug,
         "timings": stage_timings,
         "comparison_rows": comparison_rows,
-
-        # 🔥 CRITICAL (DO NOT CHANGE)
         "mmr_data": {
             "umap_coords": debug.get("umap_coords"),
             "sim_matrix": debug.get("sim_matrix"),
