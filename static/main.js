@@ -127,7 +127,7 @@ function renderLatencyPanel(timings) {
         : "";
     const llmPct = total > 0 ? Math.round(((timings.llm || 0) / total) * 100) : 0;
     const llmCallout = llmPct > 50
-        ? `<div class="llm-callout">💬 LLM generation is <b>${llmPct}%</b> of total time (${timings.llm}ms) — retrieval is fast ✅</div>`
+        ? `<div class="llm-callout">LLM generation is <b>${llmPct}%</b> of total time (${timings.llm}ms) — retrieval is fast</div>`
         : "";
 
     container.innerHTML = `
