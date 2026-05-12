@@ -1,0 +1,722 @@
+[
+  {
+    "text": "Transformers acts as the model-definition framework for state-of-the-art machine learning models in text, computer\nvision, audio, video, and multimodal models, for both inference and training.It centralizes the model definition so that this definition is agreed upon across the ecosystem.transformers is the\npivot across frameworks: if a model definition is supported, it will be compatible with the majority of training\nframeworks (Axolotl, Unsloth, DeepSpeed, FSDP, PyTorch-Lightning, \u2026), inference engines (vLLM, SGLang, TGI, \u2026),\nand adjacent modeling libraries (llama.cpp, mlx, \u2026) which leverage the model definition from transformers .We pledge to help support new state-of-the-art models and democratize their usage by having their model definition be\nsimple, customizable, and efficient.There are over 1M+ Transformers model checkpoints on the Hugging Face Hub you can use.Explore the Hub today to find a model and use Transformers to help you get started right away.Explore the Models Timeline to discover the latest text, vision, audio and multimodal model architectures in Transformers.Transformers provides everything you need for inference or training with state-of-the-art pretrained models.Some of the main features include:\n\n- Pipeline : Simple and optimized inference class for many machine learning tasks like text generation, image segmentation, automatic speech recognition, document question answering, and more.\n\n- Trainer : A comprehensive trainer that supports features such as mixed precision, torch.compile, and FlashAttention for training and distributed training for PyTorch models.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/index/",
+      "title": "Transformers \u00b7 Hugging Face",
+      "chunk_id": 0,
+      "global_chunk_id": 0
+    }
+  },
+  {
+    "text": "- Trainer : A comprehensive trainer that supports features such as mixed precision, torch.compile, and FlashAttention for training and distributed training for PyTorch models.\n\n- generate : Fast text generation with large language models (LLMs) and vision language models (VLMs), including support for streaming and multiple decoding strategies.Read our Philosophy to learn more about Transformers\u2019 design principles.Transformers is designed for developers and machine learning engineers and researchers.Its main design principles are:\n\n- Fast and easy to use: Every model is implemented from only three main classes (configuration, model, and preprocessor) and can be quickly used for inference or training with Pipeline or Trainer .\n\n- Pretrained models: Reduce your carbon footprint, compute cost and time by using a pretrained model instead of training an entirely new one.Each pretrained model is reproduced as closely as possible to the original model and offers state-of-the-art performance.If you\u2019re new to Transformers or want to learn more about transformer models, we recommend starting with the LLM course .This comprehensive course covers everything from the fundamentals of how transformer models work to practical applications across various tasks.You\u2019ll learn the complete workflow, from curating high-quality datasets to fine-tuning large language models and implementing reasoning capabilities.The course contains both theoretical and hands-on exercises to build a solid foundational knowledge of transformer models as you learn.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/index/",
+      "title": "Transformers \u00b7 Hugging Face",
+      "chunk_id": 1,
+      "global_chunk_id": 1
+    }
+  },
+  {
+    "text": "Transformers works with PyTorch .It has been tested on Python 3.10+ and PyTorch 2.4+.uv is an extremely fast Rust-based Python package and project manager and requires a virtual environment by default to manage different projects and avoids compatibility issues between dependencies.It can be used as a drop-in replacement for pip , but if you prefer to use pip, remove uv from the commands below.Refer to the uv installation docs to install uv.Create a virtual environment to install Transformers in.\n\n```\nuv venv .env\n\nsource\n.env/bin/activate\n```\n\nInstall Transformers with the following command.uv is a fast Rust-based Python package and project manager.\n\n```\nuv pip install transformers\n```\n\nFor GPU acceleration, install the appropriate CUDA drivers for PyTorch .Run the command below to check if your system detects an NVIDIA GPU.\n\n```\nnvidia-smi\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/installation/",
+      "title": "Installation \u00b7 Hugging Face",
+      "chunk_id": 0,
+      "global_chunk_id": 2
+    }
+  },
+  {
+    "text": "To install a CPU-only version of Transformers, run the following command.\n\n```\nuv pip install torch --index-url https: //download.pytorch.org/whl/cpu\nuv pip install transformers\n```\n\nTest whether the install was successful with the following command.It should return a label and score for the provided text.\n\n```\npython -c\n\"from transformers import pipeline; print(pipeline('sentiment-analysis')('hugging face is the best'))\"\n\n[{\n'label'\n:\n'POSITIVE'\n,\n'score'\n: 0.9998704791069031}]\n```\n\nInstalling from source installs the latest version rather than the stable version of the library.It ensures you have the most up-to-date changes in Transformers and it\u2019s useful for experimenting with the latest features or fixing a bug that hasn\u2019t been officially released in the stable version yet.The downside is that the latest version may not always be stable.If you encounter any problems, please open a GitHub Issue so we can fix it as soon as possible.Install from source with the following command.\n\n```\nuv pip install git+https://github.com/huggingface/transformers\n```\n\nCheck if the install was successful with the command below.It should return a label and score for the provided text.\n\n```\npython -c\n\"from transformers import pipeline; print(pipeline('sentiment-analysis')('hugging face is the best'))\"\n\n[{\n'label'\n:\n'POSITIVE'\n,\n'score'\n: 0.9998704791069031}]\n```\n\nAn editable install is useful if you\u2019re developing locally with Transformers.It links your local copy of Transformers to the Transformers repository instead of copying the files.The files are added to Python\u2019s import path.\n\n```\ngit\nclone\nhttps: //github.com/huggingface/transformers.git\n\ncd\ntransformers\nuv pip install -e .\n```\n\nYou must keep the local Transformers folder to keep using it.Update your local version of Transformers with the latest changes in the main repository with the following command.\n\n```\ncd ~/transformers/git pull\n```\n\nconda is a language-agnostic package manager.Install Transformers from the conda-forge channel in your newly created virtual environment.\n\n```\nconda install conda-forge::transformers\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/installation/",
+      "title": "Installation \u00b7 Hugging Face",
+      "chunk_id": 1,
+      "global_chunk_id": 3
+    }
+  },
+  {
+    "text": "After installation, you can configure the Transformers cache location or set up the library for offline usage.When you load a pretrained model with from_pretrained() , the model is downloaded from the Hub and locally cached.Every time you load a model, it checks whether the cached model is up-to-date.If it\u2019s the same, then the local model is loaded.If it\u2019s not the same, the newer model is downloaded and cached.The default directory given by the shell environment variable HF_HUB_CACHE is ~/.cache/huggingface/hub .On Windows, the default directory is C:\\Users\\username\\.cache\\huggingface\\hub .Cache a model in a different directory by changing the path in the following shell environment variables (listed by priority).\n\n- XDG_CACHE_HOME + /huggingface (only if HF_HOME is not set)\n\nTo use Transformers in an offline or firewalled environment requires the downloaded and cached files ahead of time.Download a model repository from the Hub with the snapshot_download method.Refer to the Download files from the Hub guide for more options for downloading files from the Hub.You can download files from specific revisions, download from the CLI, and even filter which files to download from a repository.\n\n```\nfrom\nhuggingface_hub\nimport\nsnapshot_download\n\nsnapshot_download(repo_id=\n\"meta-llama/Llama-2-7b-hf\"\n, repo_type=\n\"model\"\n)\n```\n\nSet the environment variable HF_HUB_OFFLINE=1 to prevent HTTP calls to the Hub when loading a model.\n\n```\nHF_HUB_OFFLINE = 1 \\\npython examples/pytorch/language-modeling/run_clm.py --model_name_or_path meta-llama/Llama-2-7b-hf --dataset_name wikitext ...\n```\n\nAnother option for only loading cached files is to set local_files_only=True in from_pretrained() .\n\n```\nfrom\ntransformers\nimport\nLlamaForCausalLM\n\nmodel = LlamaForCausalLM.from_pretrained(\n\"./path/to/local/directory\"\n, local_files_only=\nTrue\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/installation/",
+      "title": "Installation \u00b7 Hugging Face",
+      "chunk_id": 2,
+      "global_chunk_id": 4
+    }
+  },
+  {
+    "text": "Transformers is designed to be fast and easy to use so that everyone can start learning or building with transformer models.The number of user-facing abstractions is limited to only three classes for instantiating a model, and two APIs for inference or training.This quickstart introduces you to Transformers\u2019 key features and shows you how to:\n\n- fine-tune a model with Trainer\n\nTo start, we recommend creating a Hugging Face account .An account lets you host and access version controlled models, datasets, and Spaces on the Hugging Face Hub , a collaborative platform for discovery and building.Create a User Access Token and log in to your account.Paste your User Access Token into notebook_login when prompted to log in.\n\n```\nfrom\nhuggingface_hub\nimport\nnotebook_login\n\nnotebook_login()\n```\n\n```\n!pip install torch\n```\n\nThen install an up-to-date version of Transformers and some additional libraries from the Hugging Face ecosystem for accessing datasets and vision models, evaluating training, and optimizing training for large models.\n\n```\n!pip install -U transformers datasets evaluate accelerate timm\n```\n\nEach pretrained model inherits from three base classes.We recommend using the AutoClass API to load models and preprocessors because it automatically infers the appropriate architecture for each task and machine learning framework based on the name or path to the pretrained weights and configuration file.Use from_pretrained() to load the weights and configuration file from the Hub into the model and preprocessor class.When you load a model, configure the following parameters to ensure the model is optimally loaded.\n\n- device_map=\"auto\" automatically allocates the model weights to your fastest device first.\n\n- dtype=\"auto\" directly initializes the model weights in the data type they\u2019re stored in, which can help avoid loading the weights twice (PyTorch loads weights in torch.float32 by default).",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/quicktour/",
+      "title": "Quickstart \u00b7 Hugging Face",
+      "chunk_id": 0,
+      "global_chunk_id": 5
+    }
+  },
+  {
+    "text": "```\nfrom\ntransformers\nimport\nAutoModelForCausalLM, AutoTokenizer\n\nmodel = AutoModelForCausalLM.from_pretrained(\n\"meta-llama/Llama-2-7b-hf\"\n, dtype=\n\"auto\"\n, device_map=\n\"auto\"\n)\ntokenizer = AutoTokenizer.from_pretrained(\n\"meta-llama/Llama-2-7b-hf\"\n)\n```\n\nTokenize the text and return PyTorch tensors with the tokenizer.Move the model to an accelerator if it\u2019s available to accelerate inference.\n\n```\nmodel_inputs = tokenizer([\n\"The secret to baking a good cake is \"\n], return_tensors=\n\"pt\"\n).to(model.device)\n```\n\nThe model is now ready for inference or training.For inference, pass the tokenized inputs to generate() to generate text.Decode the token ids back into text with batch_decode() .\n\n```\ngenerated_ids = model.generate(**model_inputs, max_length=\n30\n)\ntokenizer.batch_decode(generated_ids)[\n0\n]\n\n'<s> The secret to baking a good cake is 100% in the preparation.There are so many recipes out there, '\n```\n\nSkip ahead to the Trainer section to learn how to fine-tune a model.The Pipeline class is the most convenient way to inference with a pretrained model.It supports many tasks such as text generation, image segmentation, automatic speech recognition, document question answering, and more.Refer to the Pipeline API reference for a complete list of available tasks.Create a Pipeline object and select a task.By default, Pipeline downloads and caches a default pretrained model for a given task.Pass the model name to the model parameter to choose a specific model.Use Accelerator to automatically detect an available accelerator for inference.\n\n```\nfrom\ntransformers\nimport\npipeline\n\nfrom\naccelerate\nimport\nAccelerator\n\ndevice = Accelerator().device\n\npipeline = pipeline(\n\"text-generation\"\n, model=\n\"meta-llama/Llama-2-7b-hf\"\n, device = device)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/quicktour/",
+      "title": "Quickstart \u00b7 Hugging Face",
+      "chunk_id": 1,
+      "global_chunk_id": 6
+    }
+  },
+  {
+    "text": "Prompt Pipeline with some initial text to generate more text.\n\n```\npipeline(\n\"The secret to baking a good cake is \"\n, max_length=\n50\n)\n[{\n'generated_text'\n:\n'The secret to baking a good cake is 100% in the batter.The secret to a great cake is the icing.\\nThis is why we\u2019ve created the best buttercream frosting reci'\n}]\n```\n\nTrainer is a complete training and evaluation loop for PyTorch models.It abstracts away a lot of the boilerplate usually involved in manually writing a training loop, so you can start training faster and focus on training design choices.You only need a model, dataset, a preprocessor, and a data collator to build batches of data from the dataset.Use the TrainingArguments class to customize the training process.It provides many options for training, evaluation, and more.Experiment with training hyperparameters and features like batch size, learning rate, mixed precision, torch.compile, and more to meet your training needs.You could also use the default training parameters to quickly produce a baseline.Load a model, tokenizer, and dataset for training.\n\n```\nfrom\ntransformers\nimport\nAutoModelForSequenceClassification, AutoTokenizer\n\nfrom\ndatasets\nimport\nload_dataset\n\nmodel = AutoModelForSequenceClassification.from_pretrained(\n\"distilbert/distilbert-base-uncased\"\n)\ntokenizer = AutoTokenizer.from_pretrained(\n\"distilbert/distilbert-base-uncased\"\n)\ndataset = load_dataset(\n\"rotten_tomatoes\"\n)\n```\n\nCreate a function to tokenize the text and convert it into PyTorch tensors.Apply this function to the whole dataset with the map method.\n\n```\ndef\n\ntokenize_dataset\n(\ndataset\n):\n\nreturn\ntokenizer(dataset[\n\"text\"\n])\ndataset = dataset.map\n(tokenize_dataset, batched=\nTrue\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/quicktour/",
+      "title": "Quickstart \u00b7 Hugging Face",
+      "chunk_id": 2,
+      "global_chunk_id": 7
+    }
+  },
+  {
+    "text": "Next, set up TrainingArguments with the training features and hyperparameters.\n\n```\nfrom\ntransformers\nimport\nTrainingArguments\n\ntraining_args = TrainingArguments(\noutput_dir=\n\"distilbert-rotten-tomatoes\"\n,\nlearning_rate=\n2e-5\n,\nper_device_train_batch_size=\n8\n,\nper_device_eval_batch_size=\n8\n,\nnum_train_epochs=\n2\n,\npush_to_hub=\nTrue\n,\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/quicktour/",
+      "title": "Quickstart \u00b7 Hugging Face",
+      "chunk_id": 3,
+      "global_chunk_id": 8
+    }
+  },
+  {
+    "text": "Finally, pass all these separate components to Trainer and call train() to start.\n\n```\nfrom\ntransformers\nimport\nTrainer\n\ntrainer = Trainer(\nmodel = model,\nargs = training_args,\ntrain_dataset = dataset[\n\"train\"\n],\neval_dataset = dataset[\n\"test\"\n],\nprocessing_class = tokenizer,\ndata_collator = data_collator,\n)\n\ntrainer.train()\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/quicktour/",
+      "title": "Quickstart \u00b7 Hugging Face",
+      "chunk_id": 4,
+      "global_chunk_id": 9
+    }
+  },
+  {
+    "text": "Congratulations, you just trained your first model with Transformers!\n\nNow that you have a better understanding of Transformers and what it offers, it\u2019s time to keep exploring and learning what interests you the most.\n\n- Base classes : Learn more about the configuration, model and processor classes.This will help you understand how to create and customize models, preprocess different types of inputs (audio, images, multimodal), and how to share your model.\n\n- Inference : Explore the Pipeline further, inference and chatting with LLMs, agents, and how to optimize inference with your machine learning framework and hardware.\n\n- Training : Study the Trainer in more detail, as well as distributed training and optimizing training on specific hardware.\n\n- Quantization : Reduce memory and storage requirements with quantization and speed up inference by representing weights with fewer bits.\n\n- Resources : Looking for end-to-end recipes for how to train and inference with a model for a specific task?\n\nCheck out the task recipes!",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/quicktour/",
+      "title": "Quickstart \u00b7 Hugging Face",
+      "chunk_id": 5,
+      "global_chunk_id": 10
+    }
+  },
+  {
+    "text": "Checkpoints are often serialized in a format that does not match what a model expects at runtime.Common scenarios include:\n\n- Fused weights : Checkpoints store separate gate_proj and up_proj weights, but the model uses a fused gate_up_proj for efficiency.\n\n- MoE expert consolidation : Individual expert weights ( experts.0.weight , experts.1.weight , \u2026) need to be stacked into a single 3D tensor.\n\n- Legacy naming : Old checkpoints use different naming conventions (e.g., LayerNorm.gamma vs LayerNorm.weight ).\n\n- Quantization : Weights may be stored in quantized formats that need deserialization.Dynamic weight loading addresses this by applying scheduled, reversible operations to checkpoint tensors as they are loaded.Transformers makes this available through WeightConverter , which maps one or more source keys to target keys by running a list of composable conversion operations.This approach adapts to new weight layouts, and supports loading quantized mixture-of-experts (MoEs) or enabling tensor parallelism and MoEs.This guide demonstrates how to use the WeightConverter to convert tensors.Your WeightConverter should be added inside _build_checkpoint_conversion_mapping() in the conversion_mapping.py file.All models go through the dynamic weight loading system.Conversion mapping is an optional step within that system that only activates when the model has entries in _MODEL_TO_CONVERSION_PATTERN .\n\n```\nCheckpoint\nFile \u2192 from_pretrained()\u2192 convert_and_load_state_dict_in_model()\n\u2193\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502\nFor\n\neach\nweight\nin\n\ncheckpoint\n: \u2502\n\u2502\n1.Match renamed/processed source key\nto\nmodel parameter \u2502\n\u2502\n2.Shard the weight\nand\nsend\nto\ndevice(async)\u2502\n\u2502\n3.Collect tensors\nwith\nthe same source_pattern together \u2502\n\u2502(e.g.MoE experts, gate_up_proj)\u2502\n\u2502\n4.Apply dequantization/deserialization(\nif\npre-quant)\u2502\n\u2502\n5.Apply\nconversion\n(\nif\ndefined)\u2502\n\u2502\n6.Apply quantization(\nif\nenabled\nand\nstep\n4\n\nnot\nused)\u2502\n\u2502\n7.Set\nparameter\non\nmodel \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 0,
+      "global_chunk_id": 11
+    }
+  },
+  {
+    "text": "For most dense models, the checkpoint format matches the model format directly, so no conversion mapping is needed.Some models may still require renaming (e.g., legacy naming conventions).TP sharding still applies when enabled.\n\n```\nCheckpoint: Model:\nmodel\n.layers\n.0\n.self_attn\n.q_proj\n.weight\n\u2192 model\n.layers\n.0\n.self_attn\n.q_proj\n.weight\n\nmodel\n.layers\n.0\n.self_attn\n.k_proj\n.weight\n\u2192 model\n.layers\n.0\n.self_attn\n.k_proj\n.weight\n\nmodel\n.layers\n.0\n.mlp\n.gate_proj\n.weight\n\u2192 model\n.layers\n.0\n.mlp\n.gate_proj\n.weight\n\nmodel\n.layers\n.0\n.mlp\n.up_proj\n.weight\n\u2192 model\n.layers\n.0\n.mlp\n.up_proj\n.weight\n\nmodel\n.layers\n.0\n.mlp\n.down_proj\n.weight\n\u2192 model\n.layers\n.0\n.mlp\n.down_proj\n.weight\n```\n\nLegacy checkpoints may use older naming conventions that are handled by built-in renamings applied to all models:\n\n```\nCheckpoint: Model:\n\nLayerNorm\n.gamma \u2192\nLayerNorm\n.weight\n\nLayerNorm\n.beta \u2192\nLayerNorm\n.bias\n```\n\nFor MoE models, the checkpoint format differs from the model format.Conversion mapping transforms separate expert weights into fused 3D tensors, and TP sharding applies after conversion.\n\n```\nCheckpoint: Model:\nexperts.0\n.w1\n.weight\n\u2500\u2510\nexperts.1\n.w1\n.weight\n\u2502 MergeModulelist\n... \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2192 experts\n.gate_up_proj\n(\n8\n, hidden,\n2\n*intermediate)\nexperts.0\n.w3\n.weight\n\u2502 + Concatenate\nexperts.1\n.w3\n.weight\n\u2500\u2518\n```\n\nThe system is built around several key components defined in src/transformers/core_model_loading.py :",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 1,
+      "global_chunk_id": 12
+    }
+  },
+  {
+    "text": "Phase 1 \u2014 Per-key processing (iterates over checkpoint keys):\n\n- Rename key via WeightRenaming (e.g.block_sparse_moe -> mlp )\n\n- Match pattern via WeightConverter (e.g.experts.*.w1.weight )\n\n- Shard (TP) and send to device asynchronously via ThreadPoolExecutor\n\n- Collect tensors with the same source_pattern together (e.g.all MoE expert weights, gate + up projections)",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 2,
+      "global_chunk_id": 13
+    }
+  },
+  {
+    "text": "Phase 2 \u2014 Per-mapping processing (iterates over collected mappings):\n\n- Dequantize/deserialize (pre-quantized checkpoints only)\n\n- Apply ConversionOps chain : Chunk , Concatenate , MergeModulelist , Transpose , etc.\n\n- Quantize on-the-fly (if not pre-quantized)",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 3,
+      "global_chunk_id": 14
+    }
+  },
+  {
+    "text": "The base class that handles pattern matching and tensor collection:\n\n- Pattern compilation : Converts glob-style patterns ( *.weight ) to regex.\n\n- Key renaming : rename_source_key() transforms checkpoint keys to model keys.\n\n- Tensor collection : add_tensor() gathers related tensors for batch processing.\n\n- Reversibility : reverse_transform() creates the inverse operation for saving.\n\n```\n@dataclass(\nslots=\nTrue\n)\n\nclass\n\nWeightTransform\n:\nsource_patterns:\nstr\n|\nlist\n[\nstr\n]\n# Checkpoint key patterns\n\ntarget_patterns:\nstr\n|\nlist\n[\nstr\n]\n# Model key patterns\n\ncompiled_sources: re.Pattern\n# Compiled regex for matching\n\ndistributed_operation: TensorParallelLayer |\nNone\n\nquantization_operation: ConversionOps |\nNone\n\ncollected_tensors:\ndict\n[\nstr\n,\nlist\n[Future]]\n# Gathered tensors\n\nlayer_targets:\ndict\n[\nstr\n,\nset\n[\nstr\n]]\n# Target key tracking\n```\n\nWeightRenaming is a specialized WeightTransform for simple 1:1 key renaming without tensor operations:\n\n```\n# Legacy checkpoint compatibility\n\nWeightRenaming(\n\"LayerNorm.gamma\"\n,\n\"LayerNorm.weight\"\n)\n\n# Module path changes\n\nWeightRenaming(\n\".block_sparse_moe.\"\n,\n\".mlp.\"\n)\n\n# Adding prefixes\n\nWeightRenaming(\n\"(.+)\"\n,\n\"timm_model.\\\\1\"\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 4,
+      "global_chunk_id": 15
+    }
+  },
+  {
+    "text": "WeightConverter extends WeightTransform with a list of ConversionOps :\n\n```\n@dataclass(\nslots=\nTrue\n)\n\nclass\n\nWeightConverter\n(\nWeightTransform\n):\noperations:\nlist\n[ConversionOps]\n# Chain of operations\n```\n\nIt supports many-to-one (e.g., concatenating gate + up \u2192 gate_up ), one-to-many (e.g., splitting qkv \u2192 q , k , v ), and chained operations applied sequentially.The WeightConverter class has several operations that are executed when from_pretrained() is called for transforming checkpoint source tensors into model target tensors.Operations are fully reversible.Saving reverses the conversions and returns the original checkpoint so you can easily work across different frameworks.The Chunk operation splits a tensor into equal parts along a dimension.For example, if a model expects Q, K, and V as three separate tensors instead of a single tensor.\n\n```\nWeightConverter(\n\n\"self_attn.qkv_proj\"\n,\n[\n\"self_attn.q_proj\"\n,\n\"self_attn.k_proj\"\n,\n\"self_attn.v_proj\"\n],\noperations = [Chunk(dim=\n0\n)],\n)\n```\n\nThe Concatenate operation fuses separate tensors into a single tensor.For example, if a model expects Q, K, and V as a single tensor instead of separate tensors.\n\n```\nWeightConverter(\n[\n\"self_attn.q_proj\"\n,\n\"self_attn.k_proj\"\n,\n\"self_attn.v_proj\"\n],\n\n\"self_attn.qkv_proj\"\n,\noperations = [Concatenate(dim=\n0\n)],\n)\n```\n\nMergeModulelist merges a list of 2D tensors into a single 3D tensor.For example, you can compose MergeModulelist with Concatenate to stack the experts in a MoE and pack them into one tensor.\n\n```\nWeightConverter(\n[\n\"block_sparse_moe.experts.*.w1.weight\"\n,\n\"block_sparse_moe.experts.*.w3.weight\"\n, ],\n\n\"mlp.experts.gate_up_proj\"\n,\noperations = [\nMergeModulelist(dim=\n0\n),\nConcatenate(dim=\n1\n),\n],\n)\n```\n\nSplitModulelist splits a 3D tensor back into a list of 2D tensors.For example, you can split a stack of experts back into individual experts.\n\n```\nWeightConverter(\n\n\"mlp.experts.down_proj\"\n,\n\n\"block_sparse_moe.experts.*.w2.weight\"\n,\noperations = [SplitModulelist(dim=\n0\n)],\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 5,
+      "global_chunk_id": 16
+    }
+  },
+  {
+    "text": "PermuteForRope converts weights from the interleaved format to use the sin/cos format.For example, you can compose Chunk with PermuteForRope to split a fused QKV tensor and apply the sin/cos RoPE permutation to Q and K.\n\n```\nWeightConverter(\n[\n\"model.layers.*.self_attn.qkv_proj.weight\"\n],\n[\n\"model.layers.*.self_attn.q_proj.weight\"\n,\n\"model.layers.*.self_attn.k_proj.weight\"\n,\n\"model.layers.*.self_attn.v_proj.weight\"\n, ],\noperations = [\nChunk(dim=\n0\n),\nPermuteForRope(),\n],\n)\n```\n\nTranspose swaps dimensions of a tensor.Useful for converting weight layouts between different conventions.\n\n```\nWeightConverter(\nsource_patterns=\n\"mlp.gate.weight\"\n,\ntarget_patterns=\n\"mlp.text_moe.gate.weight\"\n,\noperations = [Transpose(dim0=\n0\n, dim1=\n1\n)],\n)\n```\n\nOperations can be chained to perform complex transformations.The operations execute in order, with each operation\u2019s output becoming the next operation\u2019s input.Example: Mixtral MoE conversion\n\n```\nWeightConverter(\nsource_patterns = [\n\n\".experts.*.w1.weight\"\n,\n# gate_proj per expert\n\n\".experts.*.w3.weight\"\n,\n# up_proj per expert\n\n],\ntarget_patterns=\n\".experts.gate_up_proj\"\n,\noperations = [\nMergeModulelist(dim=\n0\n),\n# Stack all experts: (n_experts, in, out)\n\nConcatenate(dim=\n1\n),\n# Fuse gate+up: (n_experts, in, 2*out)\n\n],\n)\n```\n\n```\nInput:\n\n\".experts.*.w1.weight\"\n: [tensor_0, tensor_1,\n...\n, tensor_7]\n# 8 experts\n\n\".experts.*.w3.weight\"\n: [tensor_0, tensor_1,\n...\n, tensor_7]\n# 8 experts\n\nAfter MergeModulelist\n(\ndim\n=0)\n:\n\n\".experts.*.w1.weight\"\n:\n(8, 4096, 14336)\n\n# stacked gate\n\n\".experts.*.w3.weight\"\n:\n(8, 4096, 14336)\n\n# stacked up\n\nAfter Concatenate\n(\ndim\n=1)\n:\n\n\".experts.gate_up_proj\"\n:\n(8, 4096, 28672)\n\n# fused gate_up\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 6,
+      "global_chunk_id": 17
+    }
+  },
+  {
+    "text": "The * in patterns acts as a wildcard:\n\n- During loading, it matches any numeric index ( experts.0.\n\n, experts.1.\n\n, etc.).\n\n- Tensors with the same pattern (differing only in index) are grouped together.\n\n- The order of collection is preserved for correct concatenation.Tensor parallelism integration\n\nThe dynamic loading system integrates with tensor parallelism (TP) through the TensorParallelLayer hierarchy defined in src/transformers/integrations/tensor_parallel.py .When TP is enabled, tensors are sharded during materialization, not after.This means each rank only loads the portion of the tensor it needs.\n\n```\ndef\n\nspawn_tp_materialize\n(\nthread_pool, tensor, sharding_method, tensor_idx, device, dtype\n):\n\ndef\n\n_job\n():\n\nreturn\nsharding_method.shard_tensor(tensor, tensor_idx = tensor_idx, device = device, dtype = dtype)\n\nreturn\nthread_pool.submit(_job)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 7,
+      "global_chunk_id": 18
+    }
+  },
+  {
+    "text": "For fused weights like gate_up_proj , special care is needed to shard correctly:\n\n```\ndef\n\nget_packed_weights\n(\nparam, empty_param, device_mesh, rank, dim\n):\n\n\"\"\"\nInterleaves gate and up shards correctly.Packed tensor: [G0 G1 G2 G3 | U0 U1 U2 U3]\n\nWith TP = 2:\n- Rank 0 gets: [G0 G1 | U0 U1]\n- Rank 1 gets: [G2 G3 | U2 U3]\n\"\"\"\n```\n\nThe TP operation is stored in the WeightTransform and applied after conversion operations:\n\n```\nif\nmatched_tp_pattern: = tp_plan_alt.search(renamed_key):\ntp_layer = ALL_PARALLEL_STYLES[model.tp_plan[matched_tp_pattern]]\nmapping.distributed_operation = tp_layer(\ndevice_mesh = device_mesh,\nrank = device_mesh.get_local_rank(),\nempty_param = empty_param.clone()\n)\n```\n\nQuantization hooks into the loading pipeline in two ways, depending on whether the checkpoint is already quantized:\n\n- Pre-quantized checkpoints : The quantizer provides WeightConverter instances (via get_weight_conversions() ) that deserialize quantized tensors.Checkpoint dtypes are preserved to avoid unwanted casts.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 8,
+      "global_chunk_id": 19
+    }
+  },
+  {
+    "text": "Quantization hooks into the loading pipeline in two ways, depending on whether the checkpoint is already quantized:\n\n- Pre-quantized checkpoints : The quantizer provides WeightConverter instances (via get_weight_conversions() ) that deserialize quantized tensors.Checkpoint dtypes are preserved to avoid unwanted casts.\n\n- On-the-fly quantization : The quantizer provides a quantization operation that is applied after conversion ops, quantizing weights as they are loaded.Fast and efficient model loading\n\nLoading a model is faster and uses less memory because the loader knows which tensors are required for operations and schedules their materialization lazily.The loader scans the checkpoint once to discover pattern matches and collect tensors.It stores them as Future objects and submits them to a thread pool for asynchronous loading without blocking the GIL.A parameter starts loading as soon as a thread becomes available to it.If your system runs other heavy processes, multiple threads may slow down loading instead of accelerating it.In this case, set the environment variable HF_DEACTIVATE_ASYNC_LOAD=1 to load weights sequentially.The default is 4 threads for asynchronous parameter loading.This provides the best trade-off across loading scenarios and hardware.The work is mostly I/O bound, but depending on accelerator hardware and the dtype required at loading, it can become CPU/GPU-bound if the dtype differs from the serialized one (this requires an additional copy operation).\n\n```\ndef\n\nspawn_materialize\n(\nthread_pool, tensor, device, dtype\n)-> Future |\nCallable\n:\n\ndef\n\n_job\n():\n\nreturn\n_materialize_copy(tensor, device, dtype)\n\nif\nthread_pool\nis\n\nnot\n\nNone\n:\n\nreturn\nthread_pool.submit(_job)\n# Async: returns Future\n\nelse\n:\n\nreturn\n_job\n# Sync: returns Callable(deferred execution)\n```\n\n- HF_DEACTIVATE_ASYNC_LOAD=1 environment variable is set.\n\n- Disk offloading is enabled (memory constraints require sequential loading).",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 9,
+      "global_chunk_id": 20
+    }
+  },
+  {
+    "text": "```\n1.Checkpoint\niteration(Phase\n1\n):\n-\nFor\n\neach\nkey, submit materialization job\nto\nThreadPoolExecutor\n- Job\nreturns\nFuture(async)\nor\nCallable(sync)\n- Collect\ninto\nthe matching WeightConverter/WeightRenaming\n\n2.Per-\nmapping\nprocessing(Phase\n2\n, one\nmapping\nat a\ntime\n):\n- materialize_tensors()waits\nfor\nthis\nmapping\n's Futures only\n- Apply conversion operations chain(self.operations)\n- Apply quantization operation(if on-the-fly)\n- Set parameters on model\n- Delete realized tensors immediately\n\n3.Cleanup:\n- Thread pool shutdown(with cancel_futures = True for interrupts)\n```\n\nWhen converting a weight, the converter waits for all required tensors to materialize if they haven\u2019t loaded yet.For example, the MergeModulelist operation requires all weights in ModuleList to be loaded before merging.Concatenating tensors requires a temporary copy, so operations like MergeModulelist and Concatenate need 2x the memory of the underlying tensors during conversion.Once merged, only the resulting tensor stays in memory.The theoretical worst-case memory peak is the model size plus the tensors required for the largest MergeModulelist or Concatenate operation.This worst case only occurs when all other parameters have loaded before the demanding conversion runs.Two scenarios trigger this.\n\n- All parameters loaded asynchronously before entering the demanding conversion (the thread pool was faster than the conversion queue).\n\n- The demanding conversion is the last one.For example, a MoE model using MergeModulelist for experts on each layer, the theoretical worst-case memory peak is model size plus experts on one layer.These worst-case scenarios are uncommon.The actual memory peak tends to stay close to the model size.The system supports saving models with the inverse transformations, enabling round-trip save/load:\n\n```\ndef\n\nrevert_weight_conversion\n(\nmodel, state_dict\n):\n\n\"\"\"Applies reverse conversions for saving.\"\"\"\n\nweight_conversions=\ngetattr\n(model,\n\"_weight_conversions\"\n,\nNone\n)\n\n# Reverse all transforms\n\nreverse_weight_conversion = [\nconversion.reverse_transform()\nfor\nconversion\nin\nweight_conversions\n]\n\n# Apply in reverse\n\nfor\nfirst_param_name, reversed_converter\nin\nconversion_mapping.items():\nrealized_value = reversed_converter.convert(first_param_name, model = model)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 10,
+      "global_chunk_id": 21
+    }
+  },
+  {
+    "text": "Target patterns may contain regex elements that need processing for the reverse direction:\n\n```\ndef\n\nprocess_target_pattern\n(\npattern:\nstr\n)->\ntuple\n[\nstr\n,\nstr\n|\nNone\n]:\n\n\"\"\"\n- Removes `^` and `$` anchors\n- Removes negative lookahead/lookbehind\n- Detects capturing groups, replaces with \\1\n\"\"\"\n```\n\n```\nmodel\n.layers.0\n.block_sparse_moe.experts.0\n.w1.weight\n# gate per expert\n\nmodel\n.layers.0\n.block_sparse_moe.experts.0\n.w2.weight\n# down per expert\n\nmodel\n.layers.0\n.block_sparse_moe.experts.0\n.w3.weight\n# up per expert\n\n...model\n.layers.0\n.block_sparse_moe.experts.7\n.w1.weight\n```\n\n```\nmodel\n.layers.0\n.mlp.experts.gate_up_proj #(\n8\n,\n4096\n,\n28672\n)\n\nmodel\n.layers.0\n.mlp.experts.down_proj #(\n8\n,\n14336\n,\n4096\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 11,
+      "global_chunk_id": 22
+    }
+  },
+  {
+    "text": "Conversion mapping (from conversion_mapping.py ):\n\n```\n\"mixtral\"\n: [\nWeightRenaming(\n\".block_sparse_moe.\"\n,\n\".mlp.\"\n),\nWeightConverter(\nsource_patterns = [\n\".experts.*.w1.weight\"\n,\n\".experts.*.w3.weight\"\n],\ntarget_patterns=\n\".experts.gate_up_proj\"\n,\noperations = [MergeModulelist(dim=\n0\n), Concatenate(dim=\n1\n)],\n),\nWeightConverter(\nsource_patterns = [\n\".experts.*.w2.weight\"\n],\ntarget_patterns=\n\".experts.down_proj\"\n,\noperations = [MergeModulelist(dim=\n0\n)],\n),\n],\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 12,
+      "global_chunk_id": 23
+    }
+  },
+  {
+    "text": "Custom operations (ERNIE 4.5 VL MoE)\n\nWhen the built-in operations aren\u2019t sufficient, you can create a custom ConversionOps subclass.For example, ERNIE 4.5 VL MoE needs to split a shared expert list between text and vision modalities \u2014 something no single built-in op handles.The custom ErnieFuseAndSplitTextVisionExperts operation splits and re-stacks experts across two target keys:\n\n```\n\"ernie4_5_vl_moe\"\n: [\nWeightRenaming(\n\"vision_model\"\n,\n\"vision_tower\"\n),\nWeightConverter(\nsource_patterns = [\n\"experts.*.down_proj.weight\"\n],\ntarget_patterns = [\n\n\"text_moe.experts.down_proj\"\n,\n\n\"vision_moe.experts.down_proj\"\n,\n],\noperations = [ErnieFuseAndSplitTextVisionExperts(stack_dim=\n0\n, concat_dim=\n1\n)],\n),\n],\n```\n\nCustom ops must implement convert() and the reverse_op property to support round-trip save/load.Many models share conversion patterns:\n\n```\n_MODEL_TO_CONVERSION_PATTERN = {\n\n\"mixtral\"\n:\n\"mixtral\"\n,\n\n\"minimax\"\n:\n\"mixtral\"\n,\n\n\"qwen2_moe\"\n:\n\"qwen2_moe\"\n,\n\n\"deepseek_v2\"\n:\n\"qwen2_moe\"\n,\n\n\"deepseek_v3\"\n:\n\"qwen2_moe\"\n,\n\n\"qwen3_moe\"\n:\n\"qwen2_moe\"\n,\n\n\"olmoe\"\n:\n\"qwen2_moe\"\n,\n...\n}\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 13,
+      "global_chunk_id": 24
+    }
+  },
+  {
+    "text": "Reusing the dynamic loading building blocks\n\nDynamic weight loading is not limited to full model checkpoints.The same building blocks let you load any set of\nweights as long as you can describe how checkpoint keys map to parameters and ensure the target modules exist.At a high level, the contract looks like this:\n\n- Prepare the model namespace.Make sure the modules/parameters you want to load are present and named the way your\nmapping will target them.For adapters, that means calling inject_adapter_in_model(...) so adapter modules exist\nbefore loading.For custom heads or extra modules, instantiate them on the model first.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 14,
+      "global_chunk_id": 25
+    }
+  },
+  {
+    "text": "- Describe how to map weights.Build a conversion/renaming list (for example, in a helper like _build_peft_weight_mapping(...) ) using WeightConverter or WeightRenaming .This is where you express how\ncheckpoint keys should be converted, split, merged, or renamed to match your model namespace.You can do mostly 3 things: add operations to the list of converters: these will be applied on all weights except for the ones collected in any of the WeightConverter .These in general should be WeightRenaming operations add operations to the list of operations of each converter: this is what happens for Quantization , where we just add a quantization operation after the list of operations of any WeightConverter .replace/map operations to your custom operations: this is what happens with peft .We replace the Concatenate operation of say mixtral , to be PeftConcatenate .This way, when the adapter checkpoint is read, the weights to be concatenated are collected, and are properly formatted for peft\n\n- add operations to the list of converters: these will be applied on all weights except for the ones collected in any of the WeightConverter .These in general should be WeightRenaming operations\n\n- add operations to the list of operations of each converter: this is what happens for Quantization , where we just add a quantization operation after the list of operations of any WeightConverter .\n\n- replace/map operations to your custom operations: this is what happens with peft .We replace the Concatenate operation of say mixtral , to be PeftConcatenate .This way, when the adapter checkpoint is read, the weights to be concatenated are collected, and are properly formatted for peft\n\n- Load + finalize + report.Use the core loader to perform the conversion and populate tensors, then finalize and\nlog results.Concretely, this flow is: LoadStateDictConfig(...) + _load_pretrained_model(...) to load and convert.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 15,
+      "global_chunk_id": 26
+    }
+  },
+  {
+    "text": "_finalize_load_state_dict(...) to move any missing/mismatched tensors off meta , initialize them, and tie weights.log_state_dict_report(...) to report missing/unexpected/mismatched keys (and conversion errors).\n\n- LoadStateDictConfig(...) + _load_pretrained_model(...) to load and convert.\n\n- _finalize_load_state_dict(...) to move any missing/mismatched tensors off meta , initialize them, and tie weights.\n\n- log_state_dict_report(...) to report missing/unexpected/mismatched keys (and conversion errors).These APIs are exposed to allow you to handle custom code, custom weight formats, but also make sure you benefit from the highest and most efficient weight loading, sharding and good quality of life of transformers API!",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/weightconverter",
+      "title": "Dynamic weight loading \u00b7 Hugging Face",
+      "chunk_id": 16,
+      "global_chunk_id": 27
+    }
+  },
+  {
+    "text": "Transformers provides many pretrained models that are ready to use with a single line of code.It requires a model class and the from_pretrained() method.Call from_pretrained() to download and load a model\u2019s weights and configuration stored on the Hugging Face Hub .The from_pretrained() method loads weights stored in the safetensors file format if they\u2019re available.Traditionally, PyTorch model weights are serialized with the pickle utility which is known to be unsecure.Safetensor files are more secure and faster to load.\n\n```\nfrom\ntransformers\nimport\nAutoModelForCausalLM\n\nmodel = AutoModelForCausalLM.from_pretrained(\n\"meta-llama/Llama-2-7b-hf\"\n, device_map=\n\"auto\"\n)\n```\n\nThis guide explains how models are loaded, the different ways you can load a model, how to overcome memory issues for really big models, and how to load custom models.All models have a configuration.py file with specific attributes like the number of hidden layers, vocabulary size, activation function, and more.You\u2019ll also find a modeling.py file that defines the layers and mathematical operations taking place inside each layer.The modeling.py file takes the model attributes in configuration.py and builds the model accordingly.At this point, you have a model with random weights that needs to be trained to output meaningful results.An architecture refers to the model\u2019s skeleton and a checkpoint refers to the model\u2019s weights for a given architecture.For example, BERT is an architecture while google-bert/bert-base-uncased is a checkpoint.You\u2019ll see the term model used interchangeably with architecture and checkpoint.There are two general types of models you can load:\n\n- A barebones model, like AutoModel or LlamaModel , that outputs hidden states.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/models",
+      "title": "Loading models \u00b7 Hugging Face",
+      "chunk_id": 0,
+      "global_chunk_id": 28
+    }
+  },
+  {
+    "text": "- A model with a specific head attached, like AutoModelForCausalLM or LlamaForCausalLM , for performing specific tasks.To get a pretrained model, you need to load the weights into the model.This is done by calling from_pretrained() which accepts weights from the Hugging Face Hub or a local directory.There are two model classes, the AutoModel class and a model-specific class.The AutoModel class is a convenient way to load an architecture without needing to know the exact model class name because there are many models available.It automatically selects the correct model class based on the configuration file.You only need to know the task and checkpoint you want to use.Easily switch between models or tasks, as long as the architecture is supported for a given task.For example, the same model can be used for separate tasks.\n\n```\nfrom\ntransformers\nimport\nAutoModelForCausalLM, AutoModelForSequenceClassification, AutoModelForQuestionAnswering\n\n# use the same API for 3 different tasks\n\nmodel = AutoModelForCausalLM.from_pretrained(\n\"meta-llama/Llama-2-7b-hf\"\n)\nmodel = AutoModelForSequenceClassification.from_pretrained(\n\"meta-llama/Llama-2-7b-hf\"\n)\nmodel = AutoModelForQuestionAnswering.from_pretrained(\n\"meta-llama/Llama-2-7b-hf\"\n)\n```\n\nIn other cases, you may want to quickly try out several different models for a task.\n\n```\nfrom\ntransformers\nimport\nAutoModelForCausalLM\n\n# use the same API to load 3 different models\n\nmodel = AutoModelForCausalLM.from_pretrained(\n\"meta-llama/Llama-2-7b-hf\"\n)\nmodel = AutoModelForCausalLM.from_pretrained(\n\"mistralai/Mistral-7B-v0.1\"\n)\nmodel = AutoModelForCausalLM.from_pretrained(\n\"google/gemma-7b\"\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/models",
+      "title": "Loading models \u00b7 Hugging Face",
+      "chunk_id": 1,
+      "global_chunk_id": 29
+    }
+  },
+  {
+    "text": "Large pretrained models require a lot of memory to load.The loading process involves:\n\n- creating a model with random weights\n\n- loading the pretrained weights\n\n- placing the pretrained weights on the model\n\nYou need enough memory to hold two copies of the model weights (random and pretrained) which may not be possible depending on your hardware.In distributed training environments, this is even more challenging because each process loads a pretrained model.Transformers reduces some of these memory-related challenges with fast initialization, sharded checkpoints, Accelerate\u2019s Big Model Inference feature, and supporting lower bit data types.save_pretrained() automatically shards checkpoints larger than 50GB.This keeps shard counts low for large models and simplifies file management.Parameters load in parallel and peak memory only depends on model size.Use max_shard_size in save_pretrained() to set the maximum checkpoint size before sharding.Memory usage for models requiring dynamic weight conversion depends on the model size and the size of the largest parameters in a single conversion.This typically applies to mixture-of-experts (MoE) models where the memory usage is the model size plus the number of experts on one layer.Refer to the dynamic weight loader guide to learn more about how models are loaded.save_pretrained() also creates an index file mapping parameter names to their shard files.The index contains two keys, metadata and weight_map .\n\n```\nimport\njson\n\nwith\ntempfile.TemporaryDirectory()\nas\ntmp_dir:\nmodel.save_pretrained(tmp_dir, max_shard_size=\n\"50GB\"\n)\n\nwith\n\nopen\n(os.path.join(tmp_dir,\n\"model.safetensors.index.json\"\n),\n\"r\"\n)\nas\nf:\nindex = json.load(f)\n\nprint\n(index.keys())\n```\n\nmetadata stores the total model size.\n\n```\nindex[\n\"metadata\"\n]\n{\n'total_size'\n:\n28966928384\n}\n```\n\nweight_map maps each parameter to its shard file.\n\n```\nindex[\n\"weight_map\"\n]\n{\n'lm_head.weight'\n:\n'model-00006-of-00006.safetensors'\n,\n\n'model.embed_tokens.weight'\n:\n'model-00001-of-00006.safetensors'\n,\n\n'model.layers.0.input_layernorm.weight'\n:\n'model-00001-of-00006.safetensors'\n,\n\n'model.layers.0.mlp.down_proj.weight'\n:\n'model-00001-of-00006.safetensors'\n,\n...\n}\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/models",
+      "title": "Loading models \u00b7 Hugging Face",
+      "chunk_id": 2,
+      "global_chunk_id": 30
+    }
+  },
+  {
+    "text": "Make sure you have Accelerate v0.9.0 and PyTorch v1.9.0 or later installed to use this feature!\n\nfrom_pretrained() is supercharged with Accelerate\u2019s Big Model Inference feature.Big Model Inference creates a model skeleton on the PyTorch meta device.The meta device doesn\u2019t store any real data, only the metadata.Randomly initialized weights are only created when the pretrained weights are loaded to avoid maintaining two copies of the model in memory at the same time.The maximum memory usage is only the size of the model.Learn more about device placement in Designing a device map .Big Model Inference\u2019s second feature relates to how weights are loaded and dispatched in the model skeleton.Model weights are dispatched across all available devices, starting with the fastest device (usually the GPU) and then offloading any remaining weights to slower devices (CPU and hard drive).Both features combined reduces memory usage and loading times for big pretrained models.Set device_map to \"auto\" to enable Big Model Inference.\n\n```\nfrom\ntransformers\nimport\nAutoModelForCausalLM\n\nmodel = AutoModelForCausalLM.from_pretrained(\n\"google/gemma-7b\"\n, device_map=\n\"auto\"\n)\n```\n\nYou can also manually assign layers to a device in device_map .It should map all model parameters to a device, but you don\u2019t have to detail where all the submodules of a layer go if the entire layer is on the same device.Access the hf_device_map attribute to see how a model is distributed across devices.\n\n```\ndevice_map = {\n\"model.layers.1\"\n:\n0\n,\n\"model.layers.14\"\n:\n1\n,\n\"model.layers.31\"\n:\n\"cpu\"\n,\n\"lm_head\"\n:\n\"disk\"\n}\nmodel.hf_device_map\n```\n\nThe dtype argument controls the PyTorch dtype used to instantiate model weights.By default, Transformers loads weights with the dtype or legacy torch_dtype value from config.json .If config.json doesn\u2019t include either value, Transformers uses the dtype of the first floating-point weight in the checkpoint.Override the default by passing a specific dtype.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/models",
+      "title": "Loading models \u00b7 Hugging Face",
+      "chunk_id": 3,
+      "global_chunk_id": 31
+    }
+  },
+  {
+    "text": "AutoConfig also accepts dtype for models instantiated from scratch.\n\n```\nimport\ntorch\n\nfrom\ntransformers\nimport\nAutoConfig, AutoModel\n\nmy_config = AutoConfig.from_pretrained(\n\"google/gemma-2b\"\n, dtype = torch.float16)\nmodel = AutoModel.from_config(my_config)\n```\n\nCustom models builds on Transformers\u2019 configuration and modeling classes, supports the AutoClass API, and are loaded with from_pretrained() .The difference is that the modeling code is not from Transformers.Take extra precaution when loading a custom model.While the Hub includes malware scanning for every repository, you should still be careful to avoid inadvertently executing malicious code.Set trust_remote_code=True in from_pretrained() to load a custom model.\n\n```\nfrom\ntransformers\nimport\nAutoModelForImageClassification\n\nmodel = AutoModelForImageClassification.from_pretrained(\n\"sgugger/custom-resnet50d\"\n, trust_remote_code=\nTrue\n)\n```\n\nAs an extra layer of security, load a custom model from a specific revision to avoid loading model code that may have changed.The commit hash can be copied from the models commit history .\n\n```\ncommit_hash=\n\"ed94a7c6247d8aedce4647f00f20de6875b5b292\"\n\nmodel = AutoModelForImageClassification.from_pretrained(\n\n\"sgugger/custom-resnet50d\"\n, trust_remote_code=\nTrue\n, revision = commit_hash\n)\n```\n\nRefer to the Customize models guide for more information.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/models",
+      "title": "Loading models \u00b7 Hugging Face",
+      "chunk_id": 4,
+      "global_chunk_id": 32
+    }
+  },
+  {
+    "text": "Transformers models are designed to be customizable.A models code is fully contained in the model subfolder of the Transformers repository.Each folder contains a modeling.py and a configuration.py file.Copy these files to start customizing a model.It may be easier to start from scratch if you\u2019re creating an entirely new model.But for models that are very similar to an existing one in Transformers, it is faster to reuse or subclass the same configuration and model class.This guide will show you how to customize a ResNet model, enable AutoClass support, and share it on the Hub.A configuration, given by the base PreTrainedConfig class, contains all the necessary information to build a model.This is where you\u2019ll configure the attributes of the custom ResNet model.Different attributes gives different ResNet model types.The main rules for customizing a configuration are:\n\n- A custom configuration must subclass PreTrainedConfig .This ensures a custom model has all the functionality of a Transformers\u2019 model such as from_pretrained() , save_pretrained() , and push_to_hub() .\n\n- The PreTrainedConfig __init__ must accept any kwargs and they must be passed to the superclass __init__ .PreTrainedConfig has more fields than the ones set in your custom configuration, so when you load a configuration with from_pretrained() , those fields need to be accepted by your configuration and passed to the superclass.It is useful to check the validity of some of the parameters.In the example below, a check is implemented to ensure block_type and stem_type belong to one of the predefined values.Add model_type to the configuration class to enable AutoClass support.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/custom_models",
+      "title": "Customizing models \u00b7 Hugging Face",
+      "chunk_id": 0,
+      "global_chunk_id": 33
+    }
+  },
+  {
+    "text": "```\nfrom\ntransformers\nimport\nPreTrainedConfig\n\nfrom\ntyping\nimport\n\nList\n\nclass\n\nResnetConfig\n(\nPreTrainedConfig\n):\nmodel_type=\n\"resnet\"\n\ndef\n\n__init__\n(\n\nself,\nblock_type=\n\"bottleneck\"\n,\nlayers:\nlist\n[\nint\n] = [\n3\n,\n4\n,\n6\n,\n3\n],\nnum_classes:\nint\n=\n1000\n,\ninput_channels:\nint\n=\n3\n,\ncardinality:\nint\n=\n1\n,\nbase_width:\nint\n=\n64\n,\nstem_width:\nint\n=\n64\n,\nstem_type:\nstr\n=\n\"\"\n,\navg_down:\nbool\n=\nFalse\n,\n**kwargs,\n\n):\n\nif\nblock_type\nnot\n\nin\n[\n\"basic\"\n,\n\"bottleneck\"\n]:\n\nraise\nValueError(\nf\"`block_type` must be 'basic' or bottleneck', got\n{block_type}\n.\"\n)\n\nif\nstem_type\nnot\n\nin\n[\n\"\"\n,\n\"deep\"\n,\n\"deep-tiered\"\n]:\n\nraise\nValueError(\nf\"`stem_type` must be '', 'deep' or 'deep-tiered', got\n{stem_type}\n.\"\n)\n\nself.block_type = block_type\nself.layers = layers\nself.num_classes = num_classes\nself.input_channels = input_channels\nself.cardinality = cardinality\nself.base_width = base_width\nself.stem_width = stem_width\nself.stem_type = stem_type\nself.avg_down = avg_down\n\nsuper\n().__init__(**kwargs)\n```\n\nSave the configuration to a JSON file in your custom model folder, custom-resnet , with save_pretrained() .\n\n```\nresnet50d_config = ResnetConfig(block_type=\n\"bottleneck\"\n, stem_width=\n32\n, stem_type=\n\"deep\"\n, avg_down=\nTrue\n)\nresnet50d_config.save_pretrained(\n\"custom-resnet\"\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/custom_models",
+      "title": "Customizing models \u00b7 Hugging Face",
+      "chunk_id": 1,
+      "global_chunk_id": 34
+    }
+  },
+  {
+    "text": "With the custom ResNet configuration, you can now create and customize the model.The model subclasses the base PreTrainedModel class.Like PreTrainedConfig , inheriting from PreTrainedModel and initializing the superclass with the configuration extends Transformers\u2019 functionalities such as saving and loading to the custom model.Transformers\u2019 models follow the convention of accepting a config object in the __init__ method.This passes the entire config to the model sublayers, instead of breaking the config object into multiple arguments that are individually passed to the sublayers.Writing models this way produces simpler code with a clear source of truth for any hyperparameters.It also makes it easier to reuse code from other Transformers\u2019 models.You\u2019ll create two ResNet models, a barebones ResNet model that outputs the hidden states and a ResNet model with an image classification head.Define a mapping between the block types and classes.Everything else is created by passing the configuration class to the ResNet model class.Add config_class to the model class to enable AutoClass support.\n\n```\nfrom\ntransformers\nimport\nPreTrainedModel\n\nfrom\ntimm.models.resnet\nimport\nBasicBlock, Bottleneck, ResNet\n\nfrom\n.configuration_resnet\nimport\nResnetConfig\n\nBLOCK_MAPPING = {\n\"basic\"\n: BasicBlock,\n\"bottleneck\"\n: Bottleneck}\n\nclass\n\nResnetModel\n(\nPreTrainedModel\n):\nconfig_class = ResnetConfig\n\ndef\n\n__init__\n(\nself, config\n):\n\nsuper\n().__init__(config)\nblock_layer = BLOCK_MAPPING[config.block_type]\nself.model = ResNet(\nblock_layer,\nconfig.layers,\nnum_classes = config.num_classes,\nin_chans = config.input_channels,\ncardinality = config.cardinality,\nbase_width = config.base_width,\nstem_width = config.stem_width,\nstem_type = config.stem_type,\navg_down = config.avg_down,\n)\n\ndef\n\nforward\n(\nself, tensor\n):\n\nreturn\nself.model.forward_features(tensor)\n```\n\nA model can return any output format.Returning a dictionary (like ResnetModelForImageClassification ) with losses when labels are available makes the custom model compatible with Trainer .For other output formats, you\u2019ll need your own training loop or a different library for training.Instantiate the custom model class with the configuration.\n\n```\nresnet50d = ResnetModelForImageClassification(resnet50d_config)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/custom_models",
+      "title": "Customizing models \u00b7 Hugging Face",
+      "chunk_id": 2,
+      "global_chunk_id": 35
+    }
+  },
+  {
+    "text": "At this point, you can load pretrained weights into the model or train it from scratch.In this guide, you\u2019ll load pretrained weights.Load the pretrained weights from the timm library, and then transfer those weights to the custom model with load_state_dict .\n\n```\nimport\ntimm\n\npretrained_model = timm.create_model(\n\"resnet50d\"\n, pretrained=\nTrue\n)\nresnet50d.model.load_state_dict(pretrained_model.state_dict())\n```\n\nThe AutoClass API is a shortcut for automatically loading the correct architecture for a given model.It is convenient to enable this for users loading your custom model.Make sure you have the model_type attribute (must be different from existing model types) in the configuration class and config_class attribute in the model class.Use the register() method to add the custom configuration and model to the AutoClass API.The first argument to AutoConfig.register() must match the model_type attribute in the custom configuration class, and the first argument to AutoModel.register() must match the config_class of the custom model class.\n\n```\nfrom\ntransformers\nimport\nAutoConfig, AutoModel, AutoModelForImageClassification\n\nAutoConfig.register(\n\"resnet\"\n, ResnetConfig)\nAutoModel.register(ResnetConfig, ResnetModel)\nAutoModelForImageClassification.register(ResnetConfig, ResnetModelForImageClassification)\n```\n\nYour custom model code is now compatible with the AutoClass API.Users can load the model with the AutoModel or AutoModelForImageClassification classes.Upload a custom model to the Hub to allow other users to easily load and use it.Ensure the model directory is structured correctly as shown below.The directory should contain:\n\n- modeling.py : Contains the code for ResnetModel and ResnetModelForImageClassification .This file can rely on relative imports to other files as long as they\u2019re in the same directory.When copying a Transformers\u2019 model file, replace all relative imports at the top of the modeling.py file to import from Transformers instead.\n\n- configuration.py : Contains the code for ResnetConfig .\n\n- __init__.py : Can be empty, this file allows Python resnet_model to be used as a module.\n\n```\n.\n\u2514\u2500\u2500 resnet_model\n\u251c\u2500\u2500 __init__.py\n\u251c\u2500\u2500 configuration_resnet.py\n\u2514\u2500\u2500 modeling_resnet.py\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/custom_models",
+      "title": "Customizing models \u00b7 Hugging Face",
+      "chunk_id": 3,
+      "global_chunk_id": 36
+    }
+  },
+  {
+    "text": "To share the model, import the ResNet model and configuration.\n\n```\nfrom\nresnet_model.configuration_resnet\nimport\nResnetConfig\n\nfrom\nresnet_model.modeling_resnet\nimport\nResnetModel, ResnetModelForImageClassification\n```\n\nCopy the code from the model and configuration files.To make sure the AutoClass objects are saved with save_pretrained() , call the register_for_auto_class() method.This modifies the configuration JSON file to include the AutoClass objects and mapping.For a model, pick the appropriate AutoModelFor class based on the task.\n\n```\nResnetConfig.register_for_auto_class()\nResnetModel.register_for_auto_class(\n\"AutoModel\"\n)\nResnetModelForImageClassification.register_for_auto_class(\n\"AutoModelForImageClassification\"\n)\n```\n\nTo map more than one task to the model, edit auto_map in the configuration JSON file directly.\n\n```\n\"auto_map\"\n:\n\n{\n\n\"AutoConfig\"\n:\n\n\"<your-repo-name>--<config-name>\"\n,\n\n\"AutoModel\"\n:\n\n\"<your-repo-name>--<config-name>\"\n,\n\n\"AutoModelFor<Task>\"\n:\n\n\"<your-repo-name>--<config-name>\"\n,\n\n}\n,\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/custom_models",
+      "title": "Customizing models \u00b7 Hugging Face",
+      "chunk_id": 4,
+      "global_chunk_id": 37
+    }
+  },
+  {
+    "text": "Create the configuration and model and load pretrained weights into it.\n\n```\nresnet50d_config = ResnetConfig(block_type=\n\"bottleneck\"\n, stem_width=\n32\n, stem_type=\n\"deep\"\n, avg_down=\nTrue\n)\nresnet50d = ResnetModelForImageClassification(resnet50d_config)\n\npretrained_model = timm.create_model(\n\"resnet50d\"\n, pretrained=\nTrue\n)\nresnet50d.model.load_state_dict(pretrained_model.state_dict())\n```\n\nThe model is ready to be pushed to the Hub now.Log in to your Hugging Face account from the command line or notebook.\n\n```\nhf auth login\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/custom_models",
+      "title": "Customizing models \u00b7 Hugging Face",
+      "chunk_id": 5,
+      "global_chunk_id": 38
+    }
+  },
+  {
+    "text": "Call push_to_hub() on the model to upload the model to the Hub.\n\n```\nresnet50d.push_to_hub( \"custom-resnet50d\" )\n```\n\nThe pretrained weights, configuration, modeling.py and configuration.py files should all be uploaded to the Hub now in a repository under your namespace.Because a custom model doesn\u2019t use the same modeling code as a Transformers\u2019 model, you need to add trust_remote_code=True in from_pretrained() to load it.Refer to the load custom models section for more information.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/custom_models",
+      "title": "Customizing models \u00b7 Hugging Face",
+      "chunk_id": 6,
+      "global_chunk_id": 39
+    }
+  },
+  {
+    "text": "Monkey patching (experimental feature)\n\nMonkey patching allows you to replace model components globally without modifying the original model code.Once registered, patches are automatically applied when loading any model with from_pretrained() or ~PreTrainedModel.from_config .This enables you to restructure models for specific requirements like quantization compatibility, apply optimizations, or experiment with architectural variants.Monkey patching should be used as a last resort when you need to change the layout and structure of a module and or its weights.For many customization and optimization needs, try using the Attention interface , Experts interface , or Kernels registry instead.Only use monkey patching when you need structural changes that can\u2019t be achieved through custom forward implementations alone (e.g., for quantization library compatibility, fusing layers, or architectural experiments).Here\u2019s a simple example showing how to replace a model component:\n\n```\nfrom\ntransformers\nimport\nAutoModelForCausalLM\n\nfrom\ntransformers.models.llama.modeling_llama\nimport\nLlamaAttention\n\nfrom\ntransformers.monkey_patching\nimport\nregister_patch_mapping\n\n# Define your replacement class(must inherit from nn.Module)\n\nclass\n\nCustomLlamaAttention\n(\nLlamaAttention\n):\n\ndef\n\nforward\n(\nself, *args, **kwargs\n):\n\n# Your custom implementation\n\nprint\n(\n\"Using custom attention!\"\n)\n\nreturn\n\nsuper\n().forward(*args, **kwargs)\n\n# Register the patch globally(only applies to transformers modeling modules)\n\nregister_patch_mapping(mapping = {\n\"LlamaAttention\"\n: CustomLlamaAttention})\n\n# Load a model - the patch is automatically applied during initialization\n\nmodel = AutoModelForCausalLM.from_pretrained(\n\"meta-llama/Llama-3.2-1B\"\n)\n\n# All LlamaAttention layers in the model are now CustomLlamaAttention instances\n\nprint\n(\ntype\n(model.model.layers[\n0\n].self_attn))\n# <class '__main__.CustomLlamaAttention'>\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 0,
+      "global_chunk_id": 40
+    }
+  },
+  {
+    "text": "Monkey patches work through a two-step process:\n\n- Registration : Call register_patch_mapping to add mappings to a global registry.Registration : Call register_patch_mapping to add mappings to a global registry.\n\n- Application : Patches are automatically applied during model initialization: from_pretrained/from_config : Patches are automatically applied via an internal context manager.No additional action needed!\n\nManual construction (e.g., Model(config) ): You must use the apply_patches context manager manually.Application : Patches are automatically applied during model initialization:\n\n- from_pretrained/from_config : Patches are automatically applied via an internal context manager.No additional action needed!\n\n- Manual construction (e.g., Model(config) ): You must use the apply_patches context manager manually.Once patches are registered, they persist and affect all subsequent model loads until you clear them with clear_patch_mapping .\n\n- Only classes in transformers modeling modules are allowed to be patched (e.g., LlamaAttention , LlamaMLP ).\n\n- The mapping keys can be either exact class names or regular expression patterns (see Pattern matching below).Use register_patch_mapping to register mappings globally:\n\n```\nfrom\ntransformers.monkey_patching\nimport\nregister_patch_mapping\n\n# Register a single patch\n\nregister_patch_mapping(\nmapping = {\n\"Qwen2MoeExperts\"\n: SequentialExperts}\n)\n\n# Register multiple patches at once\n\nregister_patch_mapping(\nmapping = {\n\n\"Qwen2MoeExperts\"\n: SequentialExperts,\n\n\"Qwen2MoeAttention\"\n: CustomAttention,\n},\n\n# Overwrite existing patches if they exist\n\noverwrite=\nTrue\n,\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 1,
+      "global_chunk_id": 41
+    }
+  },
+  {
+    "text": "You can use regular expressions to match multiple classes with a single pattern:\n\n```\nfrom\ntransformers.monkey_patching\nimport\nregister_patch_mapping\n\n# Match all classes containing \"Attention\"\n\nregister_patch_mapping(\nmapping = {\n\".*Attention\"\n: CustomAttention}\n)\n\n# More examples\n\nregister_patch_mapping(\nmapping = {\n\n\".*MoeExperts$\"\n: CustomExperts,\n# Ends with \"MoeExperts\"\n\n\"^Llama\\\\d+Attention$\"\n: CustomAttention,\n# Llama2Attention, Llama3Attention, etc.\n\n}\n)\n```\n\nImportant : Exact matches take precedence over patterns.If you register both \"LlamaAttention\" and \".*Attention\" , classes named LlamaAttention will use the exact-match replacement, while other matching classes will use the pattern-match replacement.Regex patterns can silently break models.A broad pattern like \".*Attention\" will match every class whose name contains \u201cAttention\u201d \u2014 including container classes that wrap the attention you actually want to replace.For example, BERT has three attention-related classes: BertSelfAttention and BertCrossAttention (the inner attention implementations) and BertAttention (an outer module that contains one of those inner classes).Patching all three with the same custom attention layer produces a broken model because the outer BertAttention no longer wraps the inner one \u2014 it is one, eliminating expected sub-modules like self and output .Prefer narrow patterns (e.g., \".*SelfAttention$\" ) or exact class names to avoid unintended matches.To unregister patches, use unregister_patch_mapping :\n\n```\nfrom\ntransformers.monkey_patching\nimport\nunregister_patch_mapping\n\n# Unregister a single patch(use exact name or pattern from registration)\n\nunregister_patch_mapping(keys = [\n\"Qwen2MoeExperts\"\n])\n\n# Unregister multiple patches at once\n\nunregister_patch_mapping(keys = [\n\"Qwen2MoeExperts\"\n,\n\"Qwen2MoeAttention\"\n])\n\n# Unregister a pattern\n\nunregister_patch_mapping(keys = [\n\".*Attention\"\n])\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 2,
+      "global_chunk_id": 42
+    }
+  },
+  {
+    "text": "To view currently registered patches, use get_patch_mapping :\n\n```\nfrom\ntransformers.monkey_patching\nimport\nget_patch_mapping\n\ncurrent_patches = get_patch_mapping()\n\nprint\n(current_patches)\n```\n\nThe apply_patches context manager is only needed when you\u2019re constructing models manually (e.g., Model(config) ) without using from_pretrained or from_config :\n\n```\nfrom\ntransformers\nimport\nLlamaModel, LlamaConfig\n\nfrom\ntransformers.monkey_patching\nimport\nregister_patch_mapping, apply_patches\n\n# Register patch globally\n\nregister_patch_mapping(mapping = {\n\"LlamaAttention\"\n: CustomAttention})\n\n# For manual construction, you need the context manager\n\nwith\napply_patches():\nmodel = LlamaModel(LlamaConfig())\n# Uses CustomAttention\n\n# Without the context manager, manual construction uses original classes\n\nmodel = LlamaModel(LlamaConfig())\n# Uses LlamaAttention\n\n# But from_pretrained and from_config will always apply registered patches\n\nmodel = LlamaModel.from_pretrained(\n\"meta-llama/Llama-3.2-1B\"\n)\n# Uses CustomAttention\n```\n\n- Weight handling : Monkey patching only replaces classes, not weights.If your patched class has a different weights layout, you\u2019ll need to handle weight conversions separately to ensure compatibility with pretrained weights.See the Complete example below for how to combine monkey patches with weight conversion mappings.Weight handling : Monkey patching only replaces classes, not weights.If your patched class has a different weights layout, you\u2019ll need to handle weight conversions separately to ensure compatibility with pretrained weights.See the Complete example below for how to combine monkey patches with weight conversion mappings.\n\n- Global effect : Patches registered with register_patch_mapping are applied globally to all models loaded after registration.Always use clear_patch_mapping to clean up when done, especially in tests, notebooks, or long-running applications.Global effect : Patches registered with register_patch_mapping are applied globally to all models loaded after registration.Always use clear_patch_mapping to clean up when done, especially in tests, notebooks, or long-running applications.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 3,
+      "global_chunk_id": 43
+    }
+  },
+  {
+    "text": "- Class validation : The API automatically validates that replacement classes are nn.Module subclasses.If you pass an invalid class, you\u2019ll get a clear error message.Class validation : The API automatically validates that replacement classes are nn.Module subclasses.If you pass an invalid class, you\u2019ll get a clear error message.\n\n- Thread safety : All patching operations are thread-safe.You can safely register, unregister, and apply patches from multiple threads.Thread safety : All patching operations are thread-safe.You can safely register, unregister, and apply patches from multiple threads.\n\n- Matching behavior : When using exact class names, they must exactly match the original class names as they appear in the model\u2019s source code (case-sensitive).When using regex patterns, they are matched against class names using re.search() .Matching behavior : When using exact class names, they must exactly match the original class names as they appear in the model\u2019s source code (case-sensitive).When using regex patterns, they are matched against class names using re.search() .Check class name or pattern : Ensure the class name or pattern in your mapping is correct:\n\n```\n# For exact names - must match exactly(case-sensitive)\n\nregister_patch_mapping(mapping = {\n\"LlamaAttention\"\n: CustomAttention})\n\n# For patterns - use valid regex\n\nregister_patch_mapping(mapping = {\n\".*Attention\"\n: CustomAttention})\n```\n\nVerify registration : Use get_patch_mapping to confirm your mapping is registered:\n\n```\nprint\n(get_patch_mapping())\n\n# Shows all registered mappings: {'LlamaAttention': <class 'CustomAttention'>, '.*MLP': <class 'CustomMLP'>}\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 4,
+      "global_chunk_id": 44
+    }
+  },
+  {
+    "text": "Inspect the loaded model to verify the patch:\n\n```\nmodel = AutoModelForCausalLM.from_pretrained(\n\"meta-llama/Llama-3.2-1B\"\n)\n\n# Check the type of a specific module\n\nprint\n(\ntype\n(model.model.layers[\n0\n].self_attn))\n# Should show your custom class\n\n# Or iterate through all modules\n\nfor\nname, module\nin\nmodel.named_modules():\n\nif\n\n'attention'\n\nin\nname.lower():\n\nprint\n(\nf\"\n{name}\n:\n{\ntype\n(module)}\n\"\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 5,
+      "global_chunk_id": 45
+    }
+  },
+  {
+    "text": "If your patched class has different weight shapes, register a weight conversion:\n\n```\nfrom\ntransformers.conversion_mapping\nimport\nregister_checkpoint_conversion_mapping, WeightConverter\n\nfrom\ntransformers.monkey_patching\nimport\nregister_patch_mapping\n\nregister_patch_mapping(\nmapping = {\n\n\"LlamaAttention\"\n: LlamaFusedAttention,\n}\n)\n\nregister_checkpoint_conversion_mapping(\nmodel_type=\n\"llama\"\n,\nmapping = [\nWeightConverter(\nsource_patterns = [\n\"q_proj\"\n,\n\"k_proj\"\n,\n\"v_proj\"\n],\ntarget_patterns = [\n\"qkv_proj\"\n],\noperations = [\nConcatenate(dim=\n0\n),\n],\n)\n],\noverwrite=\nTrue\n,\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 6,
+      "global_chunk_id": 46
+    }
+  },
+  {
+    "text": "Always clean up patches when you\u2019re done to avoid affecting other code:\n\n```\nfrom\ntransformers.monkey_patching\nimport\nregister_patch_mapping, clear_patch_mapping\n\ntry\n:\nregister_patch_mapping(mapping = {\n\"LlamaAttention\"\n: CustomAttention})\nmodel = AutoModelForCausalLM.from_pretrained(\n\"meta-llama/Llama-2-7b-chat-hf\"\n)\n\n# ...use model ...finally\n:\nclear_patch_mapping()\n# Always clean up\n```\n\nHere\u2019s a comprehensive example showing how to restructure both the experts and attention modules in a Mixture-of-Experts model ( qwen2_moe ) for optimization and quantization compatibility.This demonstrates:\n\n- Creating custom replacement classes that maintain the same interface\n\n- Registering monkey patches for multiple components\n\n- Handling weight conversions for the new structure",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 7,
+      "global_chunk_id": 47
+    }
+  },
+  {
+    "text": "```\nfrom\ntyping\nimport\nUnpack\n\nimport\ntorch\n\nimport\ntorch.nn\nas\nnn\n\nfrom\ntransformers\nimport\nAutoModelForCausalLM, Concatenate, WeightConverter\n\nfrom\ntransformers.activations\nimport\nACT2FN\n\nfrom\ntransformers.cache_utils\nimport\nCache\n\nfrom\ntransformers.conversion_mapping\nimport\nregister_checkpoint_conversion_mapping\n\nfrom\ntransformers.integrations.sdpa_attention\nimport\nsdpa_attention_forward\n\nfrom\ntransformers.models.qwen2_moe.modeling_qwen2_moe\nimport\napply_rotary_pos_emb\n\nfrom\ntransformers.monkey_patching\nimport\nregister_patch_mapping\n\nfrom\ntransformers.utils.generic\nimport\nTransformersKwargs\n\nclass\n\nMoeMLP\n(nn.Module):\n\ndef\n\n__init__\n(\nself, config\n):\n\nsuper\n().__init__()\nself.config = config\nself.num_experts = config.num_experts\nself.hidden_size = config.hidden_size\nself.intermediate_size = config.moe_intermediate_size\nself.gate_proj = nn.Linear(self.hidden_size, self.intermediate_size, bias=\nFalse\n)\nself.up_proj = nn.Linear(self.hidden_size, self.intermediate_size, bias=\nFalse\n)\nself.down_proj = nn.Linear(self.intermediate_size, self.hidden_size, bias=\nFalse\n)\nself.act_fn = ACT2FN[config.hidden_act]\n\ndef\n\nforward\n(\nself, x\n):\ndown_proj = self.down_proj(self.act_fn(self.gate_proj(x))* self.up_proj(x))\n\nreturn\ndown_proj\n\n# Adapted from the original Qwen2MoeExperts\n\nclass\n\nModuleListExperts\n(nn.ModuleList):\n\ndef\n\n__init__\n(\nself, config\n):\n\nsuper\n().__init__()\nself.config = config\nself.num_experts = config.num_experts\n\nfor\n_\nin\n\nrange\n(self.num_experts):\nself.append(MoeMLP(config))\n\ndef\n\nforward\n(\n\nself, hidden_states: torch.Tensor, top_k_index: torch.Tensor, top_k_weights: torch.Tensor\n\n)-> torch.Tensor:\nfinal_hidden_states = torch.zeros_like(hidden_states)\n\nwith\ntorch.no_grad():\nexpert_mask = torch.nn.functional.one_hot(top_k_index, num_classes = self.num_experts)\nexpert_mask = expert_mask.permute(\n2\n,\n1\n,\n0\n)\n\nfor\nexpert_idx\nin\n\nrange\n(self.num_experts):\ntop_k_pos, token_idx = torch.where(expert_mask[expert_idx])\ncurrent_state = hidden_states[token_idx]\ncurrent_hidden_states = self[expert_idx](current_state)\ncurrent_hidden_states = current_hidden_states * top_k_weights[token_idx, top_k_pos,\nNone\n]\nfinal_hidden_states.index_add_(\n0\n, token_idx, current_hidden_states.to(final_hidden_states.dtype))\n\nreturn\nfinal_hidden_states\n\n# Adapted from the original Qwen2MoeAttention\n\nclass\n\nFusedQKVAttention\n(nn.Module):\n\ndef\n\n__init__\n(\nself, config, layer_idx:\nint\n):\n\nsuper\n().__init__()\nself.config = config\nself.layer_idx = layer_idx\nself.head_dim=\ngetattr\n(config,\n\"head_dim\"\n, config.hidden_size // config.num_attention_heads)\nself.num_key_value_groups = config.num_attention_heads // config.num_key_value_heads\nself.scaling = self.head_dim**-\n0.5\n\nself.attention_dropout = config.attention_dropout\nself.is_causal=\nTrue\n\nself.qkv_proj = nn.Linear(config.hidden_size,\n3\n* config.num_attention_heads * self.head_dim, bias=\nTrue\n)\nself.o_proj = nn.Linear(config.num_attention_heads * self.head_dim, config.hidden_size, bias=\nFalse\n)\n\nif\nself.config.layer_types[layer_idx] ==\n\"sliding_attention\"\n:\nself.sliding_window = config.sliding_window\n\ndef\n\nforward\n(\n\nself,\nhidden_states: torch.Tensor,\nposition_embeddings:\ntuple\n[torch.Tensor, torch.Tensor]|\nNone\n=\nNone\n,\nattention_mask: torch.Tensor |\nNone\n=\nNone\n,\npast_key_values: Cache |\nNone\n=\nNone\n,\n**kwargs: Unpack[TransformersKwargs],\n\n)->\ntuple\n[torch.Tensor, torch.Tensor]:\ninput_shape = hidden_states.shape[: -\n1\n]\nhidden_shape = (*input_shape, -\n1\n, self.head_dim)\n\nquery_states, key_states, value_states = self.qkv_proj(hidden_states).chunk(\n3\n, dim = -\n1\n)\n\nquery_states = query_states.view(hidden_shape).transpose(\n1\n,\n2\n)\nkey_states = key_states.view(hidden_shape).transpose(\n1\n,\n2\n)\nvalue_states = value_states.view(hidden_shape).transpose(\n1\n,\n2\n)\n\ncos, sin = position_embeddings\nquery_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)\n\nif\npast_key_values\nis\n\nnot\n\nNone\n:\nkey_states, value_states = past_key_values.update(key_states, value_states, self.layer_idx)\n\nattn_output, attn_weights = sdpa_attention_forward(\nself,\nquery_states,\nkey_states,\nvalue_states,\nattention_mask,\ndropout=\n0.0\n\nif\n\nnot\nself.training\nelse\nself.attention_dropout,\nscaling = self.scaling,\n**kwargs,\n)\n\nattn_output = attn_output.reshape(*input_shape, -\n1\n).contiguous()\nattn_output = self.o_proj(attn_output)\n\nreturn\nattn_output, attn_weights\n\n# Registering monkey patches for the new attention and experts modules.register_patch_mapping(\nmapping = {\n\n\"Qwen2MoeExperts\"\n: ModuleListExperts,\n\n\"Qwen2MoeAttention\"\n: FusedQKVAttention,\n}\n)\n\n# Registering weight conversion mappings adapted for the new modules.This registration will:\n\n# - Override the original conversion mapping for qwen2_moe which concatenated the experts into a single parameter format.\n\n# - Concatenate the q_proj, k_proj, v_proj weights/biases into a single qkv_proj weight/bias for the new fused attention module.register_checkpoint_conversion_mapping(\nmodel_type=\n\"qwen2_moe\"\n,\nmapping = [\nWeightConverter(\nsource_patterns = [\n\"q_proj\"\n,\n\"k_proj\"\n,\n\"v_proj\"\n],\ntarget_patterns = [\n\"qkv_proj\"\n],\noperations = [Concatenate(dim=\n0\n)],\n),\n],\noverwrite=\nTrue\n,\n)\n\nmodel = AutoModelForCausalLM.from_pretrained(\n\"Qwen/Qwen1.5-MoE-A2.7B\"\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 8,
+      "global_chunk_id": 48
+    }
+  },
+  {
+    "text": "Recording and replaying MoE expert routing\n\nMixture-of-Experts training workflows like RLHF need to record which experts each token was routed to during generation, then replay that exact routing in a separate training forward pass.You can build this end-to-end with the existing monkey patching and output capturing machinery \u2014 no modeling-file changes required.\n\n- A replayable router subclass that can optionally read forced expert indices from an instance attribute.\n\n- A context manager that sets those attributes across every router before a forward pass and clears them afterwards.\n\n- An entry in the model\u2019s output-capture registry so output_<name>=True exposes the indices through the standard @capture_outputs path.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 9,
+      "global_chunk_id": 49
+    }
+  },
+  {
+    "text": "```\nfrom\ncontextlib\nimport\ncontextmanager\n\nimport\ntorch\n\nimport\ntorch.nn.functional\nas\nF\n\nfrom\ntransformers\nimport\nQwen3MoeConfig, Qwen3MoeForCausalLM\n\nfrom\ntransformers.models.qwen3_moe.modeling_qwen3_moe\nimport\nQwen3MoeTopKRouter\n\nfrom\ntransformers.monkey_patching\nimport\napply_patches, register_patch_mapping\n\nfrom\ntransformers.utils.output_capturing\nimport\n_CAN_RECORD_REGISTRY, OutputRecorder\n\nclass\n\nReplayableQwen3MoeTopKRouter\n(\nQwen3MoeTopKRouter\n):\n_forced_indices: torch.Tensor |\nNone\n=\nNone\n\ndef\n\nforward\n(\nself, hidden_states\n):\nhidden_states = hidden_states.reshape(-\n1\n, self.hidden_dim)\nrouter_logits = F.linear(hidden_states, self.weight)\nrouter_logits = F.softmax(router_logits, dtype = torch.float\n, dim = -\n1\n)\n\nif\nself._forced_indices\nis\n\nnot\n\nNone\n:\nrouter_indices = self._forced_indices.to(router_logits.device).long()\n\n# Megatron-style replay: preserve expert path, recompute current scores\n\nrouter_top_value = router_logits.gather(-\n1\n, router_indices)\n\nelse\n:\nrouter_top_value, router_indices = torch.topk(router_logits, self.top_k, dim = -\n1\n)\n\nif\nself.norm_topk_prob:\nrouter_top_value = router_top_value/router_top_value.sum\n(dim = -\n1\n, keepdim=\nTrue\n)\n\nreturn\nrouter_logits, router_top_value.to(router_logits.dtype), router_indices\n\n@contextmanager\n\ndef\n\nreplay_moe_routing\n(\nmodel, selected_experts_per_layer\n):\nrouters = [m\nfor\nm\nin\nmodel.modules()\nif\n\nisinstance\n(m, ReplayableQwen3MoeTopKRouter)]\n\nif\n\nlen\n(routers) !=\nlen\n(selected_experts_per_layer):\n\nraise\nValueError(\nf\"Got\n{\nlen\n(routers)}\nrouters but\n{\nlen\n(selected_experts_per_layer)}\ntensors\"\n)\n\nfor\nr, t\nin\n\nzip\n(routers, selected_experts_per_layer):\nr._forced_indices = t\n\ntry\n:\n\nyield\n\nfinally\n:\n\nfor\nr\nin\nrouters:\nr._forced_indices=\nNone\n\n# Swap the router class and construct the model\n\nregister_patch_mapping({\n\"Qwen3MoeTopKRouter\"\n: ReplayableQwen3MoeTopKRouter})\n\nwith\napply_patches():\nmodel = Qwen3MoeForCausalLM(Qwen3MoeConfig(...)).eval\n()\n\n# Expose `output_selected_experts = True` on the base model by adding an OutputRecorder\n\n# at runtime.Index 2 of the router's tuple output is the expert indices.inner = model.model\nexisting = _CAN_RECORD_REGISTRY.get(\nstr\n(inner.__class__), {})\nor\n{}\n_CAN_RECORD_REGISTRY[\nstr\n(inner.__class__)] = {\n**existing,\n\n\"selected_experts\"\n: OutputRecorder(ReplayableQwen3MoeTopKRouter, index=\n2\n),\n}\n\n# Record\n\ncaptured = inner(input_ids = input_ids, output_selected_experts=\nTrue\n)\nselected_experts = captured.selected_experts\n# tuple of(num_tokens, top_k)LongTensors\n\n# Replay \u2014 same expert path regardless of current router weights\n\nwith\nreplay_moe_routing(inner,\nlist\n(selected_experts)):\noutputs = inner(input_ids = input_ids)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 10,
+      "global_chunk_id": 50
+    }
+  },
+  {
+    "text": "Replay preserves the exact expert indices and recomputes routing scores with the current router weights, so gradients flow through the live parameters while the expert selection stays fixed.This is the minimal replay contract used by Megatron-style MoE training.vLLM\u2019s enable_return_routed_experts=True populates CompletionOutput.routed_experts as an (seq_len, num_layers, top_k) np.int32 array.Convert it to the per-layer list this pattern expects with a single expression:\n\n```\nselected = [\ntorch.from_numpy(routed_experts[: , layer,: ].copy()).long()\n\nfor\nlayer\nin\n\nrange\n(routed_experts.shape[\n1\n])\n]\n\nwith\nreplay_moe_routing(model, selected):\nloss = model(input_ids = input_ids, labels = labels).loss\n```\n\nThe same recipe applies to other MoE families \u2014 subclass the family\u2019s *TopKRouter , match the original return contract (typically (router_logits, router_scores, router_indices) ), and register the patch.See each model\u2019s router class for the exact signature.\n\n( mapping : dict overwrite : bool = False )\n\n- mapping ( Dict[str, type[nn.Module]] ) \u2014\nMapping from original class names (or regex patterns) to replacement classes.Supports: Exact class names: \"Qwen2MoeExperts\" \u2192 CustomExperts Regex patterns: \".*Attention\" matches LlamaAttention , MistralAttention , etc.,\nor \"^Llama\\d+Attention$\" matches Llama2Attention , Llama3Attention , etc.Exact matches take precedence over patterns.Patterns are matched using re.search() ,\nso they can match anywhere in the class name unless you use anchors ( ^ for start, $ for end).\n\n- Exact class names: \"Qwen2MoeExperts\" \u2192 CustomExperts\n\n- Regex patterns: \".*Attention\" matches LlamaAttention , MistralAttention , etc.,\nor \"^Llama\\d+Attention$\" matches Llama2Attention , Llama3Attention , etc.Exact matches take precedence over patterns.Patterns are matched using re.search() ,\nso they can match anywhere in the class name unless you use anchors ( ^ for start, $ for end).",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 11,
+      "global_chunk_id": 51
+    }
+  },
+  {
+    "text": "- overwrite ( bool , optional , defaults to False ) \u2014\nWhether to overwrite existing mappings for class names that are already registered.Register patch mappings to enable automatic patching during model creation using from_pretrained , from_config or within the apply_patches context manager.Use this to register class replacements that will be automatically applied when loading any model.This is useful for quantization library compatibility, structural optimizations, and architectural\nexperimentation.The mapping is global, can grow with multiple calls, and can be cleared entirely.\n\n```\nfrom\ntransformers\nimport\nAutoModelForCausalLM\n\nfrom\ntransformers.monkey_patching\nimport\nregister_patch_mapping\n\n# Define custom expert implementation\n\nclass\n\nSequentialExperts\n(nn.Module):\n...\n\n# Register exact class name\n\nregister_patch_mapping(\nmapping = {\n\"Qwen2MoeExperts\"\n: SequentialExperts}\n)\n\n# Register with regex pattern to match multiple classes\n\nregister_patch_mapping(\nmapping = {\n\".*Attention\"\n: CustomAttention}\n# Matches LlamaAttention, MistralAttention, etc.\n\n)\n\n# Match specific model versions\n\nregister_patch_mapping(\nmapping = {\n\"^Llama\\d+Attention$\"\n: CustomLlamaAttention}\n# Matches Llama2Attention, Llama3Attention\n\n)\n\n# The patch will be automatically applied during loading\n\nmodel = AutoModelForCausalLM.from_pretrained(\n\"meta-llama/Llama-3.2-1B\"\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 12,
+      "global_chunk_id": 52
+    }
+  },
+  {
+    "text": "Note:\nFor weight conversions, use ~transformers.register_checkpoint_conversion_mapping instead.\n\n- keys ( List[str] ) \u2014\nList of mapping keys (class names or regex patterns) to remove from the patch mapping\n(e.g., [\"Qwen2MoeExperts\"] or [\".*Attention\"] ).Unregister patch mappings to disable automatic patching.This removes specified mappings from the global registry, preventing them from being applied\nduring model loading.You must provide the exact same name or pattern that was used during registration.\n\n```\nfrom\ntransformers\nimport\nAutoModelForCausalLM\n\nfrom\ntransformers.monkey_patching\nimport\nregister_patch_mapping, unregister_patch_mapping\n\n# Register a patch\n\nregister_patch_mapping(\nmapping = {\n\"Qwen2MoeExperts\"\n: CustomExperts}\n)\n\n# Unregister the patch\n\nunregister_patch_mapping([\n\"Qwen2MoeExperts\"\n])\n\n# The patch will no longer be applied during loading\n\nmodel = AutoModelForCausalLM.from_pretrained(\n\"Qwen/Qwen1.5-MoE-A2.7B\"\n)\n```\n\nClear all registered patch mappings.This removes all registered mappings from the global registry.\n\n```\nfrom\ntransformers.monkey_patching\nimport\nregister_patch_mapping, clear_patch_mapping\n\n# Register some patches\n\nregister_patch_mapping(\nmapping = {\n\"Qwen2MoeExperts\"\n: CustomExperts}\n)\n\n# Clear all patches\n\nclear_patch_mapping()\n```\n\n( ) \u2192 Dict[str, type[nn.Module]]\n\nDictionary mapping class names or patterns to replacement classes.Dictionary mapping class names or patterns to replacement classes.Get all registered patch mappings.Context manager to apply registered monkey patches within a block of code.This temporarily replaces original classes with their registered replacements during the execution of the block, and restores the original classes afterward.\n\n```\nfrom\ntransformers\nimport\nQwen2MoeModel, Qwen2MoeConfig\n\nfrom\ntransformers.monkey_patching\nimport\nregister_patch_mapping, apply_patches\n\n# Register a patch\n\nregister_patch_mapping(\nmapping = {\n\"Qwen2MoeExperts\"\n: CustomExperts}\n)\n\n# Apply patches within the context\n\nwith\napply_patches():\n\n# The model will use CustomExperts instead of Qwen2MoeExperts\n\nmodel = Qwen2MoeModel(Qwen2MoeConfig())\n\n# Outside the context, original classes are restored\n\n# The model will use Qwen2MoeExperts again\n\nmodel = Qwen2MoeModel(Qwen2MoeConfig())\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/monkey_patching",
+      "title": "Monkey patching (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 13,
+      "global_chunk_id": 53
+    }
+  },
+  {
+    "text": "Fusion mapping (experimental feature)\n\nFusion mapping provides an opt-in way to replace model submodules at load time while preserving the original checkpoint format.\n\n- Monkey patching to swap module classes before model instantiation.\n\n- Dynamic weight loading to map weights between the original and fused runtime layouts.Fusion mapping is an experimental loading feature.It changes the runtime module structure and may affect model behavior.Use it only when you explicitly want a fused runtime layout.Fusion is enabled through from_pretrained() with fusion_config :\n\n```\nfrom\ntransformers\nimport\nAutoModelForImageTextToText\n\nmodel = AutoModelForImageTextToText.from_pretrained(\n\n\"Qwen/Qwen2-VL-2B-Instruct\"\n,\nfusion_config = {\n\"patch_embeddings\"\n:\nTrue\n},\n)\n```\n\nBy default, no fusion is applied.If fusion_config is stored in the model config, from_pretrained() will reuse it automatically.Fusion registration happens before the model is instantiated:\n\n- from_pretrained() uses the explicit fusion_config argument or falls back to config.fusion_config .\n\n- The fusion registry validates the requested fusion names.\n\n- Each enabled fusion meta-initializes the target model class, optionally filters candidate modules by name, and uses is_fusable(...) to discover compatible module classes.\n\n- Fused replacement classes are registered through register_patch_mapping() .\n\n- Matching ~WeightTransform rules are generated from the config so checkpoint loading can map weights into the fused runtime layout.\n\n- By default, save_pretrained() uses the reverse conversion path to restore the original checkpoint layout.Pass save_original_format=False to keep the converted runtime layout instead.This lets a fusion use a different runtime module structure while still loading from the original checkpoint format, and by default saving back to it as well.Note: With the current monkey-patching mechanism, fusion registration is class-level: one compatible module class maps to one fused replacement class.Currently, fusion_config supports one fusion family:\n\n- patch_embeddings Enable with: Copied fusion_config = { \"patch_embeddings\" : True } Effect:\nReplaces compatible nn.Conv3d patch embedding projections with equivalent flattened nn.Linear projections at runtime.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/fusion_mapping",
+      "title": "Fusion mapping (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 0,
+      "global_chunk_id": 54
+    }
+  },
+  {
+    "text": "Effect:\nReplaces compatible nn.Conv3d patch embedding projections with equivalent flattened nn.Linear projections at runtime.\n\n- Add an is_fusable predicate.This decides whether a discovered module is compatible with the fusion.\n\n- Optionally add target_modules_patterns .This makes the discovery step more explicit by pre-filtering candidate module names before is_fusable(...) .\n\n- Add a make_fused_class factory.This returns the runtime replacement class for a compatible module class.\n\n- Add a make_transforms factory if the fused layout needs checkpoint conversion.This returns the ~WeightTransform rules that map weights between the original and fused layouts for a given config.\n\n- Register the new ModuleFusionSpec in fusion_mapping.py .Once registered, the new fusion becomes available through fusion_config .class transformers.fusion_mapping.ModuleFusionSpec\n\nBase recipe for a fusion family.A fusion spec decides which modules are eligible for a fusion, how to build\nthe runtime replacement class, and which weight transforms are needed to map\ncheckpoints between the original and fused layouts.Return the log message emitted when no compatible modules are found.Return whether module is compatible with this fusion family.Build the runtime replacement class for a compatible module class.Build the weight transforms needed to load and save the fused runtime layout.class transformers.fusion_mapping.PatchEmbeddingsFusionSpec",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/fusion_mapping",
+      "title": "Fusion mapping (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 1,
+      "global_chunk_id": 55
+    }
+  },
+  {
+    "text": "Fuse compatible Conv3d patch embeddings into flattened Linear projections.\n\n( config : PretrainedConfig fusion_name : str spec : ModuleFusionSpec )\n\nRegister one fusion family for cls .This function updates the two global registries used by fused loading:\n\n- the monkey-patching registry, so compatible module classes are replaced before initialization\n\n- the checkpoint conversion mapping, so fused runtime modules still load from the original checkpoint layout\n\n- conflicting checkpoint transforms fail fast\n\n( config fusion_config : collections.abc.Mapping[str, bool | collections.abc.Mapping[str, typing.Any]] | None = None )",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/fusion_mapping",
+      "title": "Fusion mapping (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 2,
+      "global_chunk_id": 56
+    }
+  },
+  {
+    "text": "Register requested runtime fusions for cls .\n\n- validates fusion_config against _FUSION_REGISTRY\n\n- resolves the enabled fusion families in user order\n\n- registers monkey patches and checkpoint transforms before model instantiation",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/fusion_mapping",
+      "title": "Fusion mapping (experimental feature) \u00b7 Hugging Face",
+      "chunk_id": 3,
+      "global_chunk_id": 57
+    }
+  },
+  {
+    "text": "Another way to customize a model is to modify their components, rather than writing a new model entirely, allowing you to tailor a model to your specific use case.For example, you can add new layers or optimize the attention mechanism of an architecture.Customizations are applied directly to a Transformers model so that you can continue to use features such as Trainer , PreTrainedModel , and the PEFT library.This guide will show you how to customize a models attention mechanism in order to apply Low-Rank Adaptation (LoRA) to it.The clear_import_cache utility is very useful when you\u2019re iteratively modifying and developing model code.It removes all cached Transformers modules and allows Python to reload the modified code without constantly restarting your environment.\n\n```\nfrom\ntransformers\nimport\nAutoModel\n\nfrom\ntransformers.utils.import_utils\nimport\nclear_import_cache\n\nmodel = AutoModel.from_pretrained(\n\"bert-base-uncased\"\n)\n\n# modifications to model code\n\n# clear cache to reload modified code\n\nclear_import_cache()\n\n# re-import to use updated code\n\nmodel = AutoModel.from_pretrained(\n\"bert-base-uncased\"\n)\n```\n\nSegment Anything is an image segmentation model, and it combines the query-key-value ( qkv ) projection in its attention mechanisms.To reduce the number of trainable parameters and computational overhead, you can apply LoRA to the qkv projection.This requires splitting the qkv projection so that you can separately target the q and v with LoRA.\n\n- Create a custom attention class, SamVisionAttentionSplit , by subclassing the original SamVisionAttention class.In the __init__ , delete the combined qkv and create a separate linear layer for q , k and v .",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/how_to_hack_models",
+      "title": "Customizing model components \u00b7 Hugging Face",
+      "chunk_id": 0,
+      "global_chunk_id": 58
+    }
+  },
+  {
+    "text": "```\nimport\ntorch\n\nimport\ntorch.nn\nas\nnn\n\nfrom\ntransformers.models.sam.modeling_sam\nimport\nSamVisionAttention\n\nclass\n\nSamVisionAttentionSplit\n(SamVisionAttention, nn.Module):\n\ndef\n\n__init__\n(\nself, config, window_size\n):\n\nsuper\n().__init__(config, window_size)\n\n# remove combined qkv\n\ndel\nself.qkv\n\n# separate q, k, v projections\n\nself.q = nn.Linear(config.hidden_size, config.hidden_size, bias = config.qkv_bias)\nself.k = nn.Linear(config.hidden_size, config.hidden_size, bias = config.qkv_bias)\nself.v = nn.Linear(config.hidden_size, config.hidden_size, bias = config.qkv_bias)\nself._register_load_state_dict_pre_hook(self.split_q_k_v_load_hook)\n```\n\n- The _split_qkv_load_hook function splits the pretrained qkv weights into separate q , k , and v weights when loading the model to ensure compatibility with any pretrained model.\n\n```\ndef\n\nsplit_q_k_v_load_hook\n(\nself, state_dict, prefix, *args\n):\nkeys_to_delete = []\n\nfor\nkey\nin\n\nlist\n(state_dict.keys()):\n\nif\n\n\"qkv.\"\n\nin\nkey:\n\n# split q, k, v from the combined projection\n\nq, k, v = state_dict[key].chunk(\n3\n, dim=\n0\n)\n\n# replace with individual q, k, v projections\n\nstate_dict[key.replace(\n\"qkv.\"\n,\n\"q.\"\n)] = q\nstate_dict[key.replace(\n\"qkv.\"\n,\n\"k.\"\n)] = k\nstate_dict[key.replace(\n\"qkv.\"\n,\n\"v.\"\n)] = v\n\n# mark the old qkv key for deletion\n\nkeys_to_delete.append(key)\n\n# remove old qkv keys\n\nfor\nkey\nin\nkeys_to_delete:\n\ndel\nstate_dict[key]\n```\n\n- In the forward pass, q , k , and v are computed separately while the rest of the attention mechanism remains the same.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/how_to_hack_models",
+      "title": "Customizing model components \u00b7 Hugging Face",
+      "chunk_id": 1,
+      "global_chunk_id": 59
+    }
+  },
+  {
+    "text": "```\ndef\n\nforward\n(\nself, hidden_states: torch.Tensor, output_attentions=\nFalse\n)-> torch.Tensor:\nbatch_size, height, width, _ = hidden_states.shape\nqkv_shapes = (batch_size * self.num_attention_heads, height * width, -\n1\n)\nquery = self.q(hidden_states).reshape((batch_size, height * width, self.num_attention_heads, -\n1\n)).permute(\n0\n,\n2\n,\n1\n,\n3\n).reshape(qkv_shapes)\nkey = self.k(hidden_states).reshape((batch_size, height * width, self.num_attention_heads, -\n1\n)).permute(\n0\n,\n2\n,\n1\n,\n3\n).reshape(qkv_shapes)\nvalue = self.v(hidden_states).reshape((batch_size, height * width, self.num_attention_heads, -\n1\n)).permute(\n0\n,\n2\n,\n1\n,\n3\n).reshape(qkv_shapes)\n\nattn_weights = (query * self.scale)@ key.transpose(-\n2\n, -\n1\n)\n\nattn_weights = torch.nn.functional.softmax(attn_weights, dtype = torch.float32, dim = -\n1\n).to(query.dtype)\nattn_probs = nn.functional.dropout(attn_weights, p = self.dropout, training = self.training)\nattn_output = (attn_probs @ value).reshape(batch_size, self.num_attention_heads, height, width, -\n1\n)\nattn_output = attn_output.permute(\n0\n,\n2\n,\n3\n,\n1\n,\n4\n).reshape(batch_size, height, width, -\n1\n)\nattn_output = self.proj(attn_output)\n\nif\noutput_attentions:\noutputs = (attn_output, attn_weights)\n\nelse\n:\noutputs = (attn_output,\nNone\n)\n\nreturn\noutputs\n```\n\nAssign the custom SamVisionAttentionSplit class to the original models SamVisionAttention module to replace it.All instances of SamVisionAttention in the model is replaced with the split attention version.Load the model with from_pretrained() .\n\n```\nfrom\ntransformers\nimport\nSamModel\n\n# load the pretrained SAM model\n\nmodel = SamModel.from_pretrained(\n\"facebook/sam-vit-base\"\n)\n\n# replace the attention class in the vision_encoder module\n\nfor\nlayer\nin\nmodel.vision_encoder.layers:\n\nif\n\nhasattr\n(layer,\n\"attn\"\n):\nlayer.attn = SamVisionAttentionSplit(model.config.vision_config, model.config.vision_config.window_size)\n```\n\nWith separate q , k , and v projections, apply LoRA to q and v .Create a LoraConfig and specify the rank r , lora_alpha , lora_dropout , task_type , and most importantly, the modules to target.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/how_to_hack_models",
+      "title": "Customizing model components \u00b7 Hugging Face",
+      "chunk_id": 2,
+      "global_chunk_id": 60
+    }
+  },
+  {
+    "text": "```\nfrom\npeft\nimport\nLoraConfig, get_peft_model\n\nconfig = LoraConfig(\nr=\n16\n,\nlora_alpha=\n32\n,\n\n# apply LoRA to q and v\n\ntarget_modules = [\n\"q\"\n,\n\"v\"\n],\nlora_dropout=\n0.1\n,\ntask_type=\n\"FEATURE_EXTRACTION\"\n\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/how_to_hack_models",
+      "title": "Customizing model components \u00b7 Hugging Face",
+      "chunk_id": 3,
+      "global_chunk_id": 61
+    }
+  },
+  {
+    "text": "Pass the model and LoraConfig to get_peft_model to apply LoRA to the model.\n\n```\nmodel = get_peft_model(model, config)\n```\n\nCall print_trainable_parameters to view the number of parameters you\u2019re training as a result versus the total number of parameters.\n\n```\nmodel.print_trainable_parameters()\n\n\"trainable params: 589, 824 || all params: 94, 274, 096 || trainable%: 0.6256\"\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/how_to_hack_models",
+      "title": "Customizing model components \u00b7 Hugging Face",
+      "chunk_id": 4,
+      "global_chunk_id": 62
+    }
+  },
+  {
+    "text": "The Hugging Face Hub is a platform for sharing, discovering, and consuming models of all different types and sizes.We highly recommend sharing your model on the Hub to push open-source machine learning forward for everyone!\n\nThis guide will show you how to share a model to the Hub from Transformers.To share a model to the Hub, you need a Hugging Face account .Create a User Access Token (stored in the cache by default) and login to your account from either the command line or notebook.\n\n```\nhf auth login\n```\n\nEach model repository features versioning, commit history, and diff visualization.Versioning is based on Git and Git Large File Storage (LFS) , and it enables revisions, a way to specify a model version with a commit hash, tag or branch.For example, use the revision parameter in from_pretrained() to load a specific model version from a commit hash.\n\n```\nmodel = AutoModel.from_pretrained(\n\n\"julien-c/EsperBERTo-small\"\n, revision=\n\"4c77982\"\n\n)\n```\n\nModel repositories also support gating to control who can access a model.Gating is common for allowing a select group of users to preview a research model before it\u2019s made public.A model repository also includes an inference widget for users to directly interact with a model on the Hub.Check out the Hub Models documentation to for more information.There are several ways to upload a model to the Hub depending on your workflow preference.You can push a model with Trainer , call push_to_hub() directly on a model, or use the Hub web interface.Trainer can push a model directly to the Hub after training.Set push_to_hub=True in TrainingArguments and pass it to Trainer .Once training is complete, call push_to_hub() to upload the model.push_to_hub() automatically adds useful information like training hyperparameters and results to the model card.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/model_sharing",
+      "title": "Sharing \u00b7 Hugging Face",
+      "chunk_id": 0,
+      "global_chunk_id": 63
+    }
+  },
+  {
+    "text": "```\nfrom\ntransformers\nimport\nTrainingArguments, Trainer\n\ntraining_args = TrainingArguments(output_dir=\n\"my-awesome-model\"\n, push_to_hub=\nTrue\n)\ntrainer = Trainer(\nmodel = model,\nargs = training_args,\ntrain_dataset = small_train_dataset,\neval_dataset = small_eval_dataset,\ncompute_metrics = compute_metrics,\n)\ntrainer.push_to_hub()\n```\n\nThe PushToHubMixin provides functionality for pushing a model or tokenizer to the Hub.Call push_to_hub() directly on a model to upload it to the Hub.It creates a repository under your namespace with the model name specified in push_to_hub() .\n\n```\nmodel.push_to_hub( \"my-awesome-model\" )\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/model_sharing",
+      "title": "Sharing \u00b7 Hugging Face",
+      "chunk_id": 1,
+      "global_chunk_id": 64
+    }
+  },
+  {
+    "text": "Other objects like a tokenizer are also pushed to the Hub in the same way.\n\n```\ntokenizer.push_to_hub( \"my-awesome-model\" )\n```\n\nYour Hugging Face profile should now display the newly created model repository.Navigate to the Files tab to see all the uploaded files.Refer to the Upload files to the Hub guide for more information about pushing files to the Hub.The Hub web interface is a no-code approach for uploading a model.\n\n- Create a new repository by selecting New Model .Add some information about your model:\n\n- Select the owner of the repository.This can be yourself or any of the organizations you belong to.\n\n- Pick a name for your model, which will also be the repository name.\n\n- Choose whether your model is public or private.\n\n- Click on Create model to create the model repository.Click on Create model to create the model repository.\n\n- Select the Files tab and click on the Add file button to drag-and-drop a file to your repository.Add a commit message and click on Commit changes to main to commit the file.Select the Files tab and click on the Add file button to drag-and-drop a file to your repository.Add a commit message and click on Commit changes to main to commit the file.Model cards inform users about a models performance, limitations, potential biases, and ethical considerations.It is highly recommended to add a model card to your repository!",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/model_sharing",
+      "title": "Sharing \u00b7 Hugging Face",
+      "chunk_id": 2,
+      "global_chunk_id": 65
+    }
+  },
+  {
+    "text": "A model card is a README.md file in your repository.Add this file by:\n\n- manually creating and uploading a README.md file\n\n- clicking on the Edit model card button in the repository\n\nTake a look at the Llama 3.1 model card for an example of what to include on a model card.Learn more about other model card metadata (carbon emissions, license, link to paper, etc.) available in the Model Cards guide.",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/model_sharing",
+      "title": "Sharing \u00b7 Hugging Face",
+      "chunk_id": 3,
+      "global_chunk_id": 66
+    }
+  },
+  {
+    "text": "Export Transformers\u2019 models to different formats for optimized runtimes and devices.Deploy the same model to cloud providers or run it on mobile and edge devices.You don\u2019t need to rewrite the model from scratch for each deployment environment.Freely deploy across any inference ecosystem.ExecuTorch runs PyTorch models on mobile and edge devices.It exports a model into a graph of standardized operators, compiles the graph into an ExecuTorch program, and executes it on the target device.The runtime is lightweight and calculates the execution plan ahead of time.Install Optimum ExecuTorch from source.\n\n```\ngit\nclone\nhttps: //github.com/huggingface/optimum-executorch.git\n\ncd\noptimum-executorch\npip install\n'.[dev]'\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/serialization",
+      "title": "Exporting to production \u00b7 Hugging Face",
+      "chunk_id": 0,
+      "global_chunk_id": 67
+    }
+  },
+  {
+    "text": "Export a Transformers model to ExecuTorch with the CLI tool.\n\n```\noptimum-cli\nexport\nexecutorch \\\n--model\n\"Qwen/Qwen3-8B\"\n\\\n--task\n\"text-generation\"\n\\\n--recipe\n\"xnnpack\"\n\\\n--use_custom_sdpa \\\n--use_custom_kv_cache \\\n--qlinear 8da4w \\\n--qembedding 8w \\\n--output_dir=\n\"hf_smollm2\"\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/serialization",
+      "title": "Exporting to production \u00b7 Hugging Face",
+      "chunk_id": 1,
+      "global_chunk_id": 68
+    }
+  },
+  {
+    "text": "Run the following command to view all export options.\n\n```\noptimum-cli export executorch -- help\n```\n\nONNX is a shared language for describing models from different frameworks.It represents models as a graph of standardized operators with well-defined types, shapes, and metadata.Models serialize into compact protobuf files that you can deploy across optimized runtimes and engines.Optimum ONNX exports models to ONNX with configuration objects.It supports many architectures and is easily extendable.Export models through the CLI tool or programmatically.\n\n```\nuv pip install optimum-onnx\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/serialization",
+      "title": "Exporting to production \u00b7 Hugging Face",
+      "chunk_id": 2,
+      "global_chunk_id": 69
+    }
+  },
+  {
+    "text": "Specify a model to export and the output directory with the --model argument.\n\n```\noptimum-cli export onnx --model Qwen/Qwen3-8B Qwen/Qwen3-8b-onnx/\n```\n\nRun the following command to view all available arguments or refer to the Export a model to ONNX with optimum.exporters.onnx guide for more details.\n\n```\noptimum cli export onnx -- help\n```\n\nTo export a local model, save the weights and tokenizer files in the same directory.Pass the directory path to the --model argument and use the --task argument to specify the task .If you don\u2019t provide --task , the system auto-infers it from the model or uses an architecture without a task-specific head.\n\n```\noptimum-cli\nexport\nonnx --model path/to/local/model --task text-generation Qwen/Qwen3-8b-onnx/\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/serialization",
+      "title": "Exporting to production \u00b7 Hugging Face",
+      "chunk_id": 3,
+      "global_chunk_id": 70
+    }
+  },
+  {
+    "text": "Deploy the model with any runtime that supports ONNX, including ONNX Runtime.\n\n```\nfrom\ntransformers\nimport\nAutoTokenizer\n\nfrom\noptimum.onnxruntime\nimport\nORTModelForCausalLM\n\ntokenizer = AutoTokenizer.from_pretrained(\n\"Qwen/Qwen3-8b-onnx\"\n)\nmodel = ORTModelForCausalLM.from_pretrained(\n\"Qwen/Qwen3-8b-onnx\"\n)\ninputs = tokenizer(\n\"Plants generate energy through a process known as \"\n, return_tensors=\n\"pt\"\n)\noutputs = model.generate(**inputs)\n\nprint\n(tokenizer.batch_decode(outputs))\n```\n\nExport Transformers\u2019 models programmatically with Optimum ONNX.Instantiate a ORTModel with a model and set export=True .Save the ONNX model with save_pretrained .\n\n```\nfrom\noptimum.onnxruntime\nimport\nORTModelForCausalLM\n\nfrom\ntransformers\nimport\nAutoTokenizer\n\nort_model = ORTModelForCausalLM.from_pretrained(\n\"Qwen/Qwen3-8b\"\n, export=\nTrue\n)\ntokenizer = AutoTokenizer.from_pretrained(\n\"onnx/\"\n)\n\nort_model.save_pretrained(\n\"onnx/\"\n)\ntokenizer.save_pretrained(\n\"onnx/\"\n)\n```",
+    "metadata": {
+      "source": "huggingface",
+      "url": "https://huggingface.co/docs/transformers/serialization",
+      "title": "Exporting to production \u00b7 Hugging Face",
+      "chunk_id": 4,
+      "global_chunk_id": 71
+    }
+  }
+]
