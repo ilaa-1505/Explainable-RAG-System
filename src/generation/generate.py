@@ -83,7 +83,7 @@ def generate_answer(prompt, model="llama-3.1-8b-instant"):
     response = requests.post(
         "https://api.groq.com/openai/v1/chat/completions",
         headers={
-            "Authorization": f"Bearer {os.environ.get('GROQ_API_KEY')}",
+            "Authorization": f"Bearer {os.environ.get('GROQ_API_KEY','').strip()}",
             "Content-Type": "application/json"
         },
         json={
