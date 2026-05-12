@@ -2,6 +2,6 @@ myenv/
 **/__pycache__/
 *.pyc
 .env
-data/
-processed/
-embeddings/
+README.md
+.gitignore
+.dockerignore
