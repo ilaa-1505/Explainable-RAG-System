@@ -7,13 +7,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-EXPOSE 5000
+EXPOSE 7860
 
-CMD ["bash", "-c", "\
-if [ ! -d embeddings ]; then \
-  echo 'Running setup...'; \
-  python src/ingestion/fetch_docs.py && \
-  python src/ingestion/chunk.py && \
-  python src/retrieval/embed_store.py; \
-fi && \
-python app.py"]
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:7860"]

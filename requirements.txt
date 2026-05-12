@@ -9,3 +9,5 @@ umap-learn
 requests
 beautifulsoup4
 tqdm
+gunicorn
+python-dotenv
