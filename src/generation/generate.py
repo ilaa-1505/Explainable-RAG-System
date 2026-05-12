@@ -1,5 +1,9 @@
 import requests
 from src.retrieval.query import retrieve
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def build_prompt(query, context):
     return f"""You are a helpful assistant. Answer using ONLY the context below. Do NOT use outside knowledge.
@@ -79,7 +83,7 @@ def generate_answer(prompt, model="llama-3.1-8b-instant"):
     response = requests.post(
         "https://api.groq.com/openai/v1/chat/completions",
         headers={
-            "Authorization": f"Bearer {"API_KEY"}",
+            "Authorization": f"Bearer {os.environ.get('GROQ_API_KEY')}",
             "Content-Type": "application/json"
         },
         json={

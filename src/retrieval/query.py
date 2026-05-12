@@ -158,7 +158,7 @@ RERANK_THRESHOLD = 0.3
 HYBRID_ALPHA     = 0.7
 
 def retrieve(query, top_k=7):
-    print(f"\n🔍 Query: {query}")
+    print(f"\nQuery: {query}")
     timings = {}
 
     # --- EMBED ---
