@@ -6,7 +6,8 @@
 ![HuggingFace](https://img.shields.io/badge/HuggingFace-FFD21E?style=flat&logo=huggingface&logoColor=black)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat)
 
-🔗 **[Live Demo](https://huggingface.co/spaces/Ilaa-1505/Explainable-RAG-System)**
+
+🔗 **[https://huggingface.co/spaces/Ilaa-1505/Explainable-RAG-System](https://huggingface.co/spaces/Ilaa-1505/Explainable-RAG-System)**
 > If the Space is sleeping, it may take ~30 seconds to wake up on first visit. Startup may also be slow as the embedding model and reranker weights load into memory.
 > Groq free tier rate limits apply — if you get no response, wait a minute and try again.
 
@@ -26,7 +27,9 @@ Ask a question. See exactly how the answer was built.
 
 ## Demo
 
-> ![demo](images/demo.gif)
+[![Demo](images/demo.gif)](https://youtu.be/479TTLbTYBM)
+
+> Click the GIF to view the full demo video
 
 ---
 
