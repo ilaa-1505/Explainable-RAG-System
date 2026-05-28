@@ -9,7 +9,7 @@
 
 🔗 **[https://huggingface.co/spaces/Ilaa-1505/Explainable-RAG-System](https://huggingface.co/spaces/Ilaa-1505/Explainable-RAG-System)**
 > If the Space is sleeping, it may take ~30 seconds to wake up on first visit. Startup may also be slow as the embedding model and reranker weights load into memory.
-> Groq free tier rate limits apply — if you get no response, wait a minute and try again.
+> Groq free tier rate limits apply, if you get no response, wait a minute and try again.
 
 Most RAG systems are black boxes. You type a question, get an answer, and have no idea what happened in between.
 
